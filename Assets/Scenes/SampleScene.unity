@@ -1314,11 +1314,11 @@ MonoBehaviour:
   triggerSternum: {fileID: 1330773039}
   capsuleCollider: {fileID: 0}
   moveSpeed: 12
+  moveSpeedAfterLand: 7.5
+  moveSpeedStunned: 3.5
   jumpPower: 32
   crouchPower: 8
   jumpAmount: 1
-  movement: {x: 0, y: 0, z: 0}
-  moveInput: {x: 0, y: 0}
 --- !u!136 &1204644790
 CapsuleCollider:
   m_ObjectHideFlags: 0

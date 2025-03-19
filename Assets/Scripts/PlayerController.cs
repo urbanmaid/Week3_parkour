@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Variables
     private Rigidbody rb;
     [SerializeField] TriggerListener triggerFeet;
     [SerializeField] TriggerListener triggerShoulderL;
@@ -14,10 +15,13 @@ public class PlayerController : MonoBehaviour
     
 
     [Header("Control")]
-    [SerializeField] float moveSpeed = 8f;
-    [SerializeField] float moveSpeedAfterLand = 8f;
+    [SerializeField] float moveSpeed = 10f;
+    [SerializeField] float moveSpeedMax = 14f;
+    [SerializeField] float moveSpeedAfterLand = 7.5f;
     [SerializeField] float moveSpeedStunned = 3.5f;
     private float _moveSpeedCur;
+    private float _moveTimeCur;
+    private float _moveTimeMax = 3f;
     [SerializeField] float jumpPower = 10f;
     [SerializeField] float crouchPower = 6f;
     [SerializeField] int jumpAmount = 1;
@@ -27,8 +31,9 @@ public class PlayerController : MonoBehaviour
     private InputActions _inputActions;
     private Vector3 _movement;
     private Vector2 _moveInput;
+    #endregion
 
-
+    #region Start
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -50,6 +55,9 @@ public class PlayerController : MonoBehaviour
         _inputActions.Player.Disable(); // 비활성화 시 입력 끄기
     }
 
+    #endregion
+
+    #region Control
     // Update is called once per frame
     internal void DoUpdate()
     {
@@ -73,7 +81,7 @@ public class PlayerController : MonoBehaviour
     }
     void CheckFallenSpeed()
     {
-        if(rb.linearVelocity.y < -5f)
+        if(rb.linearVelocity.y < -10f)
         {
             _isRiskyToLand = true;
         }
@@ -82,7 +90,9 @@ public class PlayerController : MonoBehaviour
             _isRiskyToLand = false;
         }
     }
+    #endregion
 
+    #region Action
     void Move()
     {
         _movement = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized * _moveSpeedCur;
@@ -109,10 +119,12 @@ public class PlayerController : MonoBehaviour
             {
                 CrossObstacle();
             }
+            /*
             else if(triggerKnee.isTriggered && triggerSternum.isTriggered)
             {
                 transform.Translate(Vector3.up * Time.deltaTime);
             }
+            */
             else // Normal jump
             {
                 rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
@@ -188,6 +200,5 @@ public class PlayerController : MonoBehaviour
             _isUsingRigidbody = false;
         }
     }
-
-
+    #endregion
 }
