@@ -6,13 +6,18 @@ public class PlayerController : MonoBehaviour
 {
     #region Variables
     private Rigidbody rb;
+    [Header("Sensing")]
     [SerializeField] TriggerListener triggerFeet;
+    [SerializeField] TriggerListener triggerToe;
     [SerializeField] TriggerListener triggerShoulderL;
     [SerializeField] TriggerListener triggerShoulderR;
     [SerializeField] TriggerListener triggerKnee;
     [SerializeField] TriggerListener triggerSternum;
     [SerializeField] CapsuleCollider capsuleCollider;
-    
+    private float _colliderHeight;
+    private float _colliderHeightOnCrouch = 0.94f;
+    [SerializeField] Animator animator;
+
 
     [Header("Control")]
     [SerializeField] float moveSpeed = 10f;
@@ -21,12 +26,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeedStunned = 3.5f;
     private float _moveSpeedCur;
     private float _moveTimeCur;
-    private float _moveTimeMax = 3f;
-    [SerializeField] float jumpPower = 10f;
+    private float _moveTimeMax = 2f;
+    [SerializeField] bool isAccelerating = true;
+    [SerializeField] float jumpPower = 24f;
     [SerializeField] float crouchPower = 6f;
     [SerializeField] int jumpAmount = 1;
-    private int _jumpAmountCur;
+    [SerializeField] int _jumpAmountCur;
+    private Vector3 _wallKickDirection = new Vector3(1.6f, 1.2f, 0f);
     private bool _isRiskyToLand = false;
+    private bool _isCrossingExcessiveHigh = false;
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
     private Vector3 _movement;
@@ -37,12 +45,20 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        AssignComponent();
         _jumpAmountCur = jumpAmount;
         _moveSpeedCur = moveSpeed;
 
         //Control setting
         AssignControl();
+    }
+
+    void AssignComponent()
+    {
+        rb = GetComponent<Rigidbody>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+
+        _colliderHeight = capsuleCollider.height;
     }
 
     void OnEnable()
@@ -62,6 +78,7 @@ public class PlayerController : MonoBehaviour
     internal void DoUpdate()
     {
         Move();
+        SetMoveSpeed();
         CheckFallenSpeed();
     }
 
@@ -92,7 +109,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region Action
+    #region Move
     void Move()
     {
         _movement = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized * _moveSpeedCur;
@@ -104,12 +121,40 @@ public class PlayerController : MonoBehaviour
             {
                 _movement.x = 0f;
             }
+            if(triggerToe.isTriggered && _moveInput.y < 0f)
+            {
+                _movement.z = 0f;
+            }
 
             // Move with linearVelocity
             rb.linearVelocity = new Vector3(_movement.x, rb.linearVelocity.y, _movement.z); // Y축은 점프에만 영향
         }
+
+        // Check move duration
+        if(_movement.magnitude < 0.08f)
+        {
+            _moveTimeCur = 0;
+        }
+        else
+        {
+            if(_moveTimeMax > _moveTimeCur)
+            {
+                _moveTimeCur += Time.deltaTime;
+            }
+        }
     }
 
+    void SetMoveSpeed()
+    {
+        if(isAccelerating)
+        {
+            _moveSpeedCur = moveSpeed + ((moveSpeedMax - moveSpeed) * (_moveTimeCur / _moveTimeMax));
+        }
+    }
+
+    #endregion
+
+    #region Jump
     void Jump()
     {
         if(_jumpAmountCur > 0)
@@ -117,88 +162,180 @@ public class PlayerController : MonoBehaviour
             _jumpAmountCur--;
             if(triggerKnee.isTriggered) // Obstacle Cross
             {
-                CrossObstacle();
+                if(triggerSternum.isTriggered)
+                {
+                    /*if(triggerForehead.isTriggered)
+                    {
+                        CrossObstacleExcessiveHigh();
+                    }
+                    else
+                    {*/
+                        StartCoroutine(CrossObstacleHigh());
+                    //}
+                }
+                else{
+                    StartCoroutine(CrossObstacle());
+                }
             }
-            /*
-            else if(triggerKnee.isTriggered && triggerSternum.isTriggered)
-            {
-                transform.Translate(Vector3.up * Time.deltaTime);
-            }
-            */
             else // Normal jump
             {
-                rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+                if(triggerSternum.isTriggered) // 3m Jump should be done after jump
+                {
+                    CrossObstacleExcessiveHigh();
+                }
+                else
+                {
+                    SetJumpPower();
+                }
             }
         }
         else if(_jumpAmountCur == 0)
         {
             if(triggerShoulderL.isTriggered)
             {
+                _moveTimeCur = 0;
                 rb.linearVelocity = Vector3.zero;
                 WallKickL();
             }
             else if(triggerShoulderR.isTriggered)
             {
+                _moveTimeCur = 0;
                 rb.linearVelocity = Vector3.zero;
                 WallKickR();
             }
+            else if(!triggerKnee.isTriggered) // If player is only hanging on the wall
+            {
+                if(triggerKnee.isTriggered)
+                {
+                    Debug.Log("Player has been hanging on the wall");
+                    _isUsingRigidbody = true;
+                    SetJumpPower();
+                }
+            }
         }
     }
-    void CrossObstacle()
+    void SetJumpPower()
+    {
+        float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
+        _moveTimeCur = 0;
+        Debug.Log("Jump Power : " + jumpPowerCur);
+        rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
+    }
+    IEnumerator CrossObstacle()
     {
         _isUsingRigidbody = true;
-        rb.AddForce(new Vector3(_movement.x, 1f * jumpPower, _movement.z), ForceMode.Impulse);
+        // Step 1, let rigidbody control my body and set force
+        rb.AddForce(new Vector3(0f, 1f * jumpPower, 0f), ForceMode.Impulse);
         Debug.Log("Crossing Obstacle");
+
+        // Step 2, go forward
+        yield return new WaitForSeconds(0.25f);
+        rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
+
+        // Step 3, return to basis
+        yield return new WaitForSeconds(0.15f);
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(new Vector3(0f, -1f * crouchPower, 0f), ForceMode.Impulse);
     }
+    IEnumerator CrossObstacleHigh()
+    {
+        _isUsingRigidbody = true;
+        rb.AddForce(new Vector3(0f, 1.6f * jumpPower, 0f), ForceMode.Impulse);
+        Debug.Log("2m Obstacle has been set");
+        
+        yield return new WaitForSeconds(0.4f);
+        rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
+    }
+    void CrossObstacleExcessiveHigh()
+    {
+        Debug.Log("3m Obstacle has been set");
+        if(!_isCrossingExcessiveHigh)
+        {
+            StartCoroutine(CrossObstacleHigh());
+            _isCrossingExcessiveHigh = true;
+        }
+    }
+
     public void ResetJumpStatus()
     {
         StartCoroutine(LandCo());
     }
-
     IEnumerator LandCo()
     {
         _jumpAmountCur = jumpAmount;
         _isUsingRigidbody = false;
+        _isCrossingExcessiveHigh = false;
+        
         if(_isRiskyToLand)
         {
             _moveSpeedCur = moveSpeedStunned;
+            isAccelerating = false;
             Debug.LogWarning("You are too fast to land off without injury");
 
             yield return new WaitForSeconds(0.75f);
-            _moveSpeedCur = moveSpeed;
+            //SetAcceleratingOn();
         }
         else
         {
             _moveSpeedCur = moveSpeedAfterLand;
-            Debug.Log("You have landed");
+            isAccelerating = false;
+            SetColliderCrouch();
+            //Debug.Log("You have landed");
 
             yield return new WaitForSeconds(0.4f);
-            _moveSpeedCur = moveSpeed;
+            //SetAcceleratingOn();
+            ResetColliderCrouch();
         }
+        SetAcceleratingOn();
+    }
+
+    void SetAcceleratingOn()
+    {
+        _moveSpeedCur = moveSpeed;
+        _moveTimeCur = 0;
+        isAccelerating = true;
     }
 
     void WallKickL()
     {
         _isUsingRigidbody = true;
-        rb.AddForce(jumpPower * new Vector3(-1.6f, 1f, 0f), ForceMode.Impulse);
+        rb.AddForce(jumpPower * Vector3.Scale(_wallKickDirection, new Vector3(-1f, 1f, 1f)), ForceMode.Impulse);
     }
 
     void WallKickR()
     {
         _isUsingRigidbody = true;
-        rb.AddForce(jumpPower * new Vector3(1.6f, 1f, 0f), ForceMode.Impulse);
+        rb.AddForce(jumpPower * _wallKickDirection, ForceMode.Impulse);
     }
 
+    #endregion
+
+    #region Crouch
+    // Fix Log #1
     IEnumerator Crouch()
     {
-        if(_jumpAmountCur > 0)
+        if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f)
         {
+            // Reset Crouch Status
             _isUsingRigidbody = true;
-            rb.AddForce(crouchPower * new Vector3(_movement.x, rb.linearVelocity.y, _movement.z), ForceMode.Impulse);
+            rb.AddForce(crouchPower * new Vector3(_movement.x, rb.linearVelocity.y / crouchPower, _movement.z), ForceMode.Impulse);
+            SetColliderCrouch();
 
+            // Reset Crouch Status
             yield return new WaitForSeconds(0.5f);
             _isUsingRigidbody = false;
+            ResetColliderCrouch();
         }
+    }
+    void SetColliderCrouch()
+    {
+        capsuleCollider.height = _colliderHeightOnCrouch;
+        capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeightOnCrouch, 0f);
+    }
+    void ResetColliderCrouch()
+    {
+        capsuleCollider.height = _colliderHeight;
+        capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeight, 0f);
     }
     #endregion
 }
