@@ -106,6 +106,13 @@ public class PlayerController : MonoBehaviour
         {
             _isRiskyToLand = false;
         }
+
+        /*
+        if(rb.linearVelocity.y < -0.2f)
+        {
+            rb.AddForce(_movement, ForceMode.Acceleration);
+        }
+        */
     }
     #endregion
 
@@ -143,7 +150,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     void SetMoveSpeed()
     {
         if(isAccelerating)
@@ -154,7 +160,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Jump
+    #region Jump - Start
     void Jump()
     {
         if(_jumpAmountCur > 0)
@@ -164,14 +170,7 @@ public class PlayerController : MonoBehaviour
             {
                 if(triggerSternum.isTriggered)
                 {
-                    /*if(triggerForehead.isTriggered)
-                    {
-                        CrossObstacleExcessiveHigh();
-                    }
-                    else
-                    {*/
-                        StartCoroutine(CrossObstacleHigh());
-                    //}
+                    StartCoroutine(CrossObstacleHigh());
                 }
                 else{
                     StartCoroutine(CrossObstacle());
@@ -181,7 +180,7 @@ public class PlayerController : MonoBehaviour
             {
                 if(triggerSternum.isTriggered) // 3m Jump should be done after jump
                 {
-                    CrossObstacleExcessiveHigh();
+                    StartCoroutine(CrossObstacleHigh());
                 }
                 else
                 {
@@ -219,6 +218,7 @@ public class PlayerController : MonoBehaviour
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
         _moveTimeCur = 0;
         Debug.Log("Jump Power : " + jumpPowerCur);
+        rb.AddForce(_movement, ForceMode.Acceleration);
         rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
     }
     IEnumerator CrossObstacle()
@@ -246,16 +246,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
     }
-    void CrossObstacleExcessiveHigh()
-    {
-        Debug.Log("3m Obstacle has been set");
-        if(!_isCrossingExcessiveHigh)
-        {
-            StartCoroutine(CrossObstacleHigh());
-            _isCrossingExcessiveHigh = true;
-        }
-    }
 
+    #endregion
+
+    #region Jump - Med
     public void ResetJumpStatus()
     {
         StartCoroutine(LandCo());
@@ -295,13 +289,11 @@ public class PlayerController : MonoBehaviour
         _moveTimeCur = 0;
         isAccelerating = true;
     }
-
     void WallKickL()
     {
         _isUsingRigidbody = true;
         rb.AddForce(jumpPower * Vector3.Scale(_wallKickDirection, new Vector3(-1f, 1f, 1f)), ForceMode.Impulse);
     }
-
     void WallKickR()
     {
         _isUsingRigidbody = true;
