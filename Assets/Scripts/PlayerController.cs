@@ -26,15 +26,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeedStunned = 3.5f;
     private float _moveSpeedCur;
     private float _moveTimeCur;
-    private float _moveTimeMax = 2f;
+    [SerializeField] float _moveTimeMax = 2f;
     [SerializeField] bool isAccelerating = true;
     [SerializeField] float jumpPower = 24f;
     [SerializeField] float crouchPower = 6f;
     [SerializeField] int jumpAmount = 1;
     [SerializeField] int _jumpAmountCur;
-    private Vector3 _wallKickDirection = new Vector3(1.6f, 1.2f, 0f);
+    private Vector3 _wallKickDirection = new(2.4f, 1.75f, 0f);
     private bool _isRiskyToLand = false;
-    private bool _isCrossingExcessiveHigh = false;
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
     private Vector3 _movement;
@@ -106,13 +105,6 @@ public class PlayerController : MonoBehaviour
         {
             _isRiskyToLand = false;
         }
-
-        /*
-        if(rb.linearVelocity.y < -0.2f)
-        {
-            rb.AddForce(_movement, ForceMode.Acceleration);
-        }
-        */
     }
     #endregion
 
@@ -166,26 +158,13 @@ public class PlayerController : MonoBehaviour
         if(_jumpAmountCur > 0)
         {
             _jumpAmountCur--;
-            if(triggerKnee.isTriggered) // Obstacle Cross
+            if(triggerSternum.isTriggered) // 3m Jump should be done after jump
             {
-                if(triggerSternum.isTriggered)
-                {
-                    StartCoroutine(CrossObstacleHigh());
-                }
-                else{
-                    StartCoroutine(CrossObstacle());
-                }
+                StartCoroutine(CrossObstacleHigh());
             }
-            else // Normal jump
+            else
             {
-                if(triggerSternum.isTriggered) // 3m Jump should be done after jump
-                {
-                    StartCoroutine(CrossObstacleHigh());
-                }
-                else
-                {
-                    SetJumpPower();
-                }
+                SetJumpPower();
             }
         }
         else if(_jumpAmountCur == 0)
@@ -202,14 +181,9 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 WallKickR();
             }
-            else if(!triggerKnee.isTriggered) // If player is only hanging on the wall
+            else if(triggerKnee.isTriggered) // If player is only hanging on the wall
             {
-                if(triggerKnee.isTriggered)
-                {
-                    Debug.Log("Player has been hanging on the wall");
-                    _isUsingRigidbody = true;
-                    SetJumpPower();
-                }
+                StartCoroutine(CrossObstacleHigh());
             }
         }
     }
@@ -221,6 +195,7 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(_movement, ForceMode.Acceleration);
         rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
     }
+    /*
     IEnumerator CrossObstacle()
     {
         _isUsingRigidbody = true;
@@ -237,14 +212,16 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(new Vector3(0f, -1f * crouchPower, 0f), ForceMode.Impulse);
     }
+    */
     IEnumerator CrossObstacleHigh()
     {
         _isUsingRigidbody = true;
-        rb.AddForce(new Vector3(0f, 1.6f * jumpPower, 0f), ForceMode.Impulse);
+        rb.AddForce(new Vector3(0f, 2f * jumpPower, 0f), ForceMode.Impulse);
         Debug.Log("2m Obstacle has been set");
         
-        yield return new WaitForSeconds(0.4f);
-        rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
+        yield return new WaitForSeconds(0.5f);
+        _isUsingRigidbody = false;
+        rb.AddForce(new Vector3(0f, 0f, 2f * crouchPower), ForceMode.Impulse);
     }
 
     #endregion
@@ -258,7 +235,6 @@ public class PlayerController : MonoBehaviour
     {
         _jumpAmountCur = jumpAmount;
         _isUsingRigidbody = false;
-        _isCrossingExcessiveHigh = false;
         
         if(_isRiskyToLand)
         {
@@ -289,6 +265,9 @@ public class PlayerController : MonoBehaviour
         _moveTimeCur = 0;
         isAccelerating = true;
     }
+    #endregion
+
+    #region Wallkick
     void WallKickL()
     {
         _isUsingRigidbody = true;
