@@ -6,6 +6,7 @@ public class TriggerListener : MonoBehaviour
     public bool isTriggered = false;
     public string targetOfTrigger = "";
     public UnityEvent actionWhenTriggered;
+    [SerializeField] bool isTargetUsedAsExclusion = false;
 
     void Start()
     {
@@ -19,10 +20,21 @@ public class TriggerListener : MonoBehaviour
     {
         if(targetOfTrigger != "") //If this element uses targetOfTrigger
         {
-            if(collision.CompareTag(targetOfTrigger))
+            if(isTargetUsedAsExclusion)
             {
-                isTriggered = true;
-                actionWhenTriggered.Invoke();
+                if(!collision.CompareTag(targetOfTrigger))
+                {
+                    isTriggered = true;
+                    actionWhenTriggered.Invoke();
+                }
+            }
+            else
+            {
+                if(collision.CompareTag(targetOfTrigger))
+                {
+                    isTriggered = true;
+                    actionWhenTriggered.Invoke();
+                }
             }
         }
         else
@@ -45,5 +57,10 @@ public class TriggerListener : MonoBehaviour
         {
             isTriggered = false;
         }
+    }
+
+    public void SetTriggeredManual(bool value)
+    {
+        isTriggered = value;
     }
 }
