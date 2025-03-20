@@ -1763,7 +1763,7 @@ GameObject:
   - component: {fileID: 6696473215917479781}
   - component: {fileID: 5216786277006535336}
   m_Layer: 0
-  m_Name: Root 1
+  m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
