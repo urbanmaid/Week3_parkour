@@ -80,7 +80,7 @@ public class RobotAnimator : MonoBehaviour
     {
         for(int i = 0; i < objectAnimated.Count; i++)
         {
-            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationWallKick[i]);
+            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationWallKickPrep[i]);
         }
     }
     internal void SetCrouch()
