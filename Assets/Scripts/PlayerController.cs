@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int jumpAmount = 1;
     private int _jumpAmountCur;
     [SerializeField] float fallMultiplier = 1.125f;
-    private Vector3 _wallKickDirection = new(2.4f, 1.75f, 0f);
+    private Vector3 _wallKickDirection = new(2.4f, 1.68f, 0f);
     private bool _isRiskyToLand = false;
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
     }
     void CheckFallenSpeed()
     {
-        if(rb.linearVelocity.y < -10f)
+        if(rb.linearVelocity.y < -25f)
         {
             _isRiskyToLand = true;
         }
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
             {
                 _movement.x = 0f;
             }
-            if(triggerToe.isTriggered && _moveInput.y < 0f)
+            if(triggerToe.isTriggered && _moveInput.y > 0f)
             {
                 _movement.z = 0f;
             }
@@ -223,6 +223,7 @@ public class PlayerController : MonoBehaviour
     void SetJumpPower()
     {
         // 점프력 계산
+        _isUsingRigidbody = true;
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
         _moveTimeCur = 0f;
 

@@ -2651,7 +2651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: fallMultiplier
-      value: 2.25
+      value: 1.275
       objectReference: {fileID: 0}
     - target: {fileID: 2456768992115990869, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -2709,6 +2709,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3354044376140182343, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3745219090179925945, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.18
@@ -2716,6 +2720,10 @@ PrefabInstance:
     - target: {fileID: 4965391762000996877, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6050943812716282369, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4165996083306022723, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
