@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,16 +12,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TriggerListener triggerToe;
     [SerializeField] TriggerListener triggerShoulderL;
     [SerializeField] TriggerListener triggerShoulderR;
-    [SerializeField] TriggerListener triggerKnee;
+    //[SerializeField] TriggerListener triggerKnee;
     [SerializeField] TriggerListener triggerSternum;
     [SerializeField] CapsuleCollider capsuleCollider;
     private float _colliderHeight;
     private float _colliderHeightOnCrouch = 0.94f;
-    [SerializeField] RobotAnimator robotAnimator;
+
 
     [Header("Sensing - Collision")]
     [SerializeField] TriggerListener triggerCollisionKnee; // Message when collided on low obstacle
     [SerializeField] TriggerListener triggerCollisionSternum; // Message when collided on high obstacle
+
+    [Header("Expression")]
+    [SerializeField] RobotAnimator robotAnimator;
 
     [Header("Control")]
     [SerializeField] float moveSpeed = 10f;
@@ -34,8 +38,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpPower = 24f;
     [SerializeField] float crouchPower = 6f;
     [SerializeField] int jumpAmount = 1;
-    [SerializeField] int _jumpAmountCur;
-    private Vector3 _wallKickDirection = new(2.4f, 1.75f, 0f);
+    private int _jumpAmountCur;
+    [SerializeField] float fallMultiplier = 1.125f;
+    private Vector3 _wallKickDirection = new(2.4f, 1.68f, 0f);
     private bool _isRiskyToLand = false;
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
@@ -43,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveInput;
 
     [Header("Anim")]
-    private int _wallKickStatus = 0;
+    [SerializeField] int _wallKickStatus = 0;
     private bool _isCrouching = false;
 
     #endregion
@@ -107,7 +112,7 @@ public class PlayerController : MonoBehaviour
     }
     void CheckFallenSpeed()
     {
-        if(rb.linearVelocity.y < -10f)
+        if(rb.linearVelocity.y < -25f)
         {
             _isRiskyToLand = true;
         }
@@ -115,13 +120,19 @@ public class PlayerController : MonoBehaviour
         {
             _isRiskyToLand = false;
         }
+
+        if (rb.linearVelocity.y < -0.02f) // 떨어질 때
+        {
+            rb.linearVelocity += (fallMultiplier - 1) * Physics.gravity.y * Time.fixedDeltaTime * Vector3.up;
+        }
     }
     #endregion
 
     #region Move
     void Move()
     {
-        _movement = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized * _moveSpeedCur;
+        // Only Z Axis(Front-rear can be applied its accelation)
+        _movement =  Vector3.Scale(new Vector3(_moveInput.x, 0f, _moveInput.y).normalized, new Vector3(moveSpeed, 1f, _moveSpeedCur));
         if(!_isUsingRigidbody)
         {
             // If player tend to stay in wall, make it unable
@@ -130,7 +141,7 @@ public class PlayerController : MonoBehaviour
             {
                 _movement.x = 0f;
             }
-            if(triggerToe.isTriggered && _moveInput.y < 0f)
+            if(triggerToe.isTriggered && _moveInput.y > 0f)
             {
                 _movement.z = 0f;
             }
@@ -167,15 +178,19 @@ public class PlayerController : MonoBehaviour
     {
         if(_jumpAmountCur > 0) // If on the ground
         {
-            _jumpAmountCur--;
-            if(triggerSternum.isTriggered) // 3m Jump should be done after jump
+            if(triggerFeet.isTriggered)
             {
-                StartCoroutine(CrossObstacleHigh());
+                _jumpAmountCur--;
+                if(triggerSternum.isTriggered) // 3m Jump should be done after jump
+                {
+                    StartCoroutine(CrossObstacleHigh());
+                }
+                else
+                {
+                    SetJumpPower();
+                }
             }
-            else
-            {
-                SetJumpPower();
-            }
+
         }
         else if(_jumpAmountCur == 0) // If on the airtime
         {
@@ -191,26 +206,32 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 WallKickR();
             }
-            else if(triggerKnee.isTriggered) // If player is only hanging on the wall
+            else if(triggerSternum.isTriggered) // If player is only hanging on the wall
             {
                 StartCoroutine(CrossObstacleHigh());
             }
+            
             else if(triggerFeet.isTriggered) // But not certain that it is on the airtime so resets the status
             {
                 Debug.LogWarning("Has some issues while jump amount is not charged even on the ground");
                 //SetJumpPower();
                 _jumpAmountCur = jumpAmount;
-                _isUsingRigidbody = false;
+                //_isUsingRigidbody = false;
             }
         }
     }
     void SetJumpPower()
     {
+        // 점프력 계산
+        _isUsingRigidbody = true;
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
-        _moveTimeCur = 0;
-        //Debug.Log("Jump Power : " + jumpPowerCur);
-        rb.AddForce(_movement, ForceMode.Acceleration);
-        rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
+        _moveTimeCur = 0f;
+
+        // 점프는 단일 Impulse로 통합
+        Vector3 jumpForce = (_movement.normalized + Vector3.up) * jumpPowerCur;
+        rb.AddForce(jumpForce, ForceMode.Impulse);
+
+        Debug.Log($"Jump Power: {jumpPowerCur}");
     }
     IEnumerator CrossObstacleHigh()
     {
@@ -243,18 +264,14 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("You are too fast to land off without injury");
 
             yield return new WaitForSeconds(0.75f);
-            //SetAcceleratingOn();
         }
         else
         {
             _moveSpeedCur = moveSpeedAfterLand;
             isAccelerating = false;
-            SetColliderCrouch();
             //Debug.Log("You have landed");
 
             yield return new WaitForSeconds(0.3f);
-            //SetAcceleratingOn();
-            ResetColliderCrouch();
         }
         SetAcceleratingOn();
     }
@@ -287,16 +304,22 @@ public class PlayerController : MonoBehaviour
     }
     public void SetWallKickPrep(int value)
     {
-        _wallKickStatus = value;
+        if(_jumpAmountCur != jumpAmount) //!triggerFeet.isTriggered
+        {
+            Debug.Log("You need to be on air to set the prep mode of anim.");
+            _wallKickStatus = value;
+        }
     }
-
     #endregion
 
     #region Crouch
     // Fix Log #1
     IEnumerator Crouch()
     {
-        if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f)
+        if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f && !_isCrouching
+        && (Math.Abs(_moveInput.x) > 0.88f || Math.Abs(_moveInput.y) > 0.88f))
+        // Crouch should be done when is on the ground, moving, not crouching
+        // and its moving direction is not diagonal
         {
             // Reset Crouch Status
             _isUsingRigidbody = true;
@@ -307,6 +330,10 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             _isUsingRigidbody = false;
             ResetColliderCrouch();
+
+            //After that makes it able to re-crouch after awhile
+            yield return new WaitForSeconds(0.25f);
+            _isCrouching = false;
         }
     }
     void SetColliderCrouch()
@@ -317,7 +344,6 @@ public class PlayerController : MonoBehaviour
     }
     void ResetColliderCrouch()
     {
-        _isCrouching = false;
         capsuleCollider.height = _colliderHeight;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeight, 0f);
     }
