@@ -12,6 +12,7 @@ public class RobotAnimator : MonoBehaviour
     [SerializeField] List<Vector3> rotationJump;
     [SerializeField] List<Vector3> rotationJumpLand;
     [SerializeField] List<Vector3> rotationWallKick;
+    [SerializeField] List<Vector3> rotationWallKickPrep;
     [SerializeField] List<Vector3> rotationCrouch;
     [SerializeField] List<Vector3> rotationDamage;
     [SerializeField] List<Vector3> rotationDeath;
@@ -26,14 +27,13 @@ public class RobotAnimator : MonoBehaviour
     {
         if(objectAnimated.Count != rotationIdle.Count
         || objectAnimated.Count != rotationRun.Count
-        /*
         || objectAnimated.Count != rotationJump.Count
         || objectAnimated.Count != rotationJumpLand.Count
         || objectAnimated.Count != rotationWallKick.Count
+        || objectAnimated.Count != rotationWallKickPrep.Count
         || objectAnimated.Count != rotationCrouch.Count
         || objectAnimated.Count != rotationDamage.Count
         || objectAnimated.Count != rotationDeath.Count
-        */
         )
         {
             Debug.LogError("There are some discord around the count with object and rotation Vector3");
@@ -62,12 +62,46 @@ public class RobotAnimator : MonoBehaviour
             objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationJump[i]);
         }
     }
-
+    internal void SetJumpLand()
+    {
+        for(int i = 0; i < objectAnimated.Count; i++)
+        {
+            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationJumpLand[i]);
+        }
+    }
     internal void SetWallKick()
     {
         for(int i = 0; i < objectAnimated.Count; i++)
         {
             objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationWallKick[i]);
+        }
+    }
+    internal void SetWallKickPrep()
+    {
+        for(int i = 0; i < objectAnimated.Count; i++)
+        {
+            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationWallKick[i]);
+        }
+    }
+    internal void SetCrouch()
+    {
+        for(int i = 0; i < objectAnimated.Count; i++)
+        {
+            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationCrouch[i]);
+        }
+    }
+    internal void SetDamage()
+    {
+        for(int i = 0; i < objectAnimated.Count; i++)
+        {
+            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationDamage[i]);
+        }
+    }
+    internal void SetDeath()
+    {
+        for(int i = 0; i < objectAnimated.Count; i++)
+        {
+            objectAnimated[i].transform.localRotation = Quaternion.Euler(rotationDeath[i]);
         }
     }
 }
