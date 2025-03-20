@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     #region Variables
     private Rigidbody rb;
-    [Header("Sensing")]
+    [Header("Sensing - Action")]
     [SerializeField] TriggerListener triggerFeet;
     [SerializeField] TriggerListener triggerToe;
     [SerializeField] TriggerListener triggerShoulderL;
@@ -16,8 +16,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CapsuleCollider capsuleCollider;
     private float _colliderHeight;
     private float _colliderHeightOnCrouch = 0.94f;
-    [SerializeField] Animator animator;
+    [SerializeField] RobotAnimator robotAnimator;
 
+    [Header("Sensing - Collision")]
+    [SerializeField] TriggerListener triggerCollisionKnee; // Message when collided on low obstacle
+    [SerializeField] TriggerListener triggerCollisionSternum; // Message when collided on high obstacle
 
     [Header("Control")]
     [SerializeField] float moveSpeed = 10f;
@@ -38,6 +41,10 @@ public class PlayerController : MonoBehaviour
     private InputActions _inputActions;
     private Vector3 _movement;
     private Vector2 _moveInput;
+
+    [Header("Anim")]
+    private int _wallKickStatus = 0;
+
     #endregion
 
     #region Start
@@ -79,6 +86,8 @@ public class PlayerController : MonoBehaviour
         Move();
         SetMoveSpeed();
         CheckFallenSpeed();
+
+        SetAnim();
     }
 
     void AssignControl()
@@ -136,6 +145,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            SetAccumulatedDist();
             if(_moveTimeMax > _moveTimeCur)
             {
                 _moveTimeCur += Time.deltaTime;
@@ -150,12 +160,62 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void SetAnim()
+    {
+        if(_movement.magnitude < 0.08f)
+        {
+            if(_wallKickStatus == -1)
+            {
+                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                robotAnimator.SetWallKick();
+            }
+            else if(_wallKickStatus == 1)
+            {
+                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                robotAnimator.SetWallKick();
+            }
+            else{
+                robotAnimator.SetIdle();
+            }
+        }
+        else
+        {
+            if(_isUsingRigidbody)
+            {
+                if(_wallKickStatus == -1)
+                {
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                    robotAnimator.SetWallKick();
+                }
+                else if(_wallKickStatus == 1)
+                {
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                    robotAnimator.SetWallKick();
+                }
+            }
+            else
+            {
+                if(_jumpAmountCur != jumpAmount)
+                {
+                    robotAnimator.SetJump();
+                }
+                else
+                {
+                    robotAnimator.SetRun();
+                }
+
+                // Set Avatar rotation
+                robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movement.x, 0f, _movement.z).normalized);
+            }
+        }        
+    }
+
     #endregion
 
     #region Jump - Start
     void Jump()
     {
-        if(_jumpAmountCur > 0)
+        if(_jumpAmountCur > 0) // If on the ground
         {
             _jumpAmountCur--;
             if(triggerSternum.isTriggered) // 3m Jump should be done after jump
@@ -167,7 +227,7 @@ public class PlayerController : MonoBehaviour
                 SetJumpPower();
             }
         }
-        else if(_jumpAmountCur == 0)
+        else if(_jumpAmountCur == 0) // If on the airtime
         {
             if(triggerShoulderL.isTriggered)
             {
@@ -185,13 +245,20 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(CrossObstacleHigh());
             }
+            else if(triggerFeet.isTriggered) // But not certain that it is on the airtime so resets the status
+            {
+                Debug.LogWarning("Has some issues while jump amount is not charged even on the ground");
+                //SetJumpPower();
+                _jumpAmountCur = jumpAmount;
+                _isUsingRigidbody = false;
+            }
         }
     }
     void SetJumpPower()
     {
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
         _moveTimeCur = 0;
-        Debug.Log("Jump Power : " + jumpPowerCur);
+        //Debug.Log("Jump Power : " + jumpPowerCur);
         rb.AddForce(_movement, ForceMode.Acceleration);
         rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
     }
@@ -235,6 +302,7 @@ public class PlayerController : MonoBehaviour
     {
         _jumpAmountCur = jumpAmount;
         _isUsingRigidbody = false;
+        _wallKickStatus = 0;
         
         if(_isRiskyToLand)
         {
@@ -258,6 +326,11 @@ public class PlayerController : MonoBehaviour
         }
         SetAcceleratingOn();
     }
+    public void SetRestrictedLand()
+    {
+        rb.linearVelocity = Vector3.zero;
+        Debug.LogWarning("You have landed area with restricted jump");
+    }
 
     void SetAcceleratingOn()
     {
@@ -271,11 +344,13 @@ public class PlayerController : MonoBehaviour
     void WallKickL()
     {
         _isUsingRigidbody = true;
+        _wallKickStatus = -1;
         rb.AddForce(jumpPower * Vector3.Scale(_wallKickDirection, new Vector3(-1f, 1f, 1f)), ForceMode.Impulse);
     }
     void WallKickR()
     {
         _isUsingRigidbody = true;
+        _wallKickStatus = 1;
         rb.AddForce(jumpPower * _wallKickDirection, ForceMode.Impulse);
     }
 
@@ -307,6 +382,31 @@ public class PlayerController : MonoBehaviour
     {
         capsuleCollider.height = _colliderHeight;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeight, 0f);
+    }
+    #endregion
+
+    #region Achievement
+    public void SetCollisionLow()
+    {
+        if(capsuleCollider.height == _colliderHeight)
+        {
+            AchievementManager.instance.UpdateCollisionLow();
+        }
+    }
+    public void SetCollisionHigh()
+    {
+        if(capsuleCollider.height == _colliderHeight)
+        {
+            if((rb.linearVelocity.y > -0.02f || 0.02f > rb.linearVelocity.y)
+            && triggerFeet.isTriggered) // If player is on the ground and velocity axis y is nearly 0
+            {
+                AchievementManager.instance.UpdateCollisionHigh();
+            }
+        }
+    }
+    void SetAccumulatedDist()
+    {
+        AchievementManager.instance.UpdateDist(Mathf.Round(rb.linearVelocity.magnitude * Time.deltaTime * 100f) / 100f);
     }
     #endregion
 }
