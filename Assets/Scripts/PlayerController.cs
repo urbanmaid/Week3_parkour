@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Anim")]
     private int _wallKickStatus = 0;
+    private bool _isCrouching = false;
 
     #endregion
 
@@ -159,57 +160,6 @@ public class PlayerController : MonoBehaviour
             _moveSpeedCur = moveSpeed + ((moveSpeedMax - moveSpeed) * (_moveTimeCur / _moveTimeMax));
         }
     }
-
-    void SetAnim()
-    {
-        if(_movement.magnitude < 0.08f)
-        {
-            if(_wallKickStatus == -1)
-            {
-                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
-                robotAnimator.SetWallKick();
-            }
-            else if(_wallKickStatus == 1)
-            {
-                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
-                robotAnimator.SetWallKick();
-            }
-            else{
-                robotAnimator.SetIdle();
-            }
-        }
-        else
-        {
-            if(_isUsingRigidbody)
-            {
-                if(_wallKickStatus == -1)
-                {
-                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
-                    robotAnimator.SetWallKick();
-                }
-                else if(_wallKickStatus == 1)
-                {
-                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
-                    robotAnimator.SetWallKick();
-                }
-            }
-            else
-            {
-                if(_jumpAmountCur != jumpAmount)
-                {
-                    robotAnimator.SetJump();
-                }
-                else
-                {
-                    robotAnimator.SetRun();
-                }
-
-                // Set Avatar rotation
-                robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movement.x, 0f, _movement.z).normalized);
-            }
-        }        
-    }
-
     #endregion
 
     #region Jump - Start
@@ -262,24 +212,6 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(_movement, ForceMode.Acceleration);
         rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
     }
-    /*
-    IEnumerator CrossObstacle()
-    {
-        _isUsingRigidbody = true;
-        // Step 1, let rigidbody control my body and set force
-        rb.AddForce(new Vector3(0f, 1f * jumpPower, 0f), ForceMode.Impulse);
-        Debug.Log("Crossing Obstacle");
-
-        // Step 2, go forward
-        yield return new WaitForSeconds(0.25f);
-        rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
-
-        // Step 3, return to basis
-        yield return new WaitForSeconds(0.15f);
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(new Vector3(0f, -1f * crouchPower, 0f), ForceMode.Impulse);
-    }
-    */
     IEnumerator CrossObstacleHigh()
     {
         _isUsingRigidbody = true;
@@ -320,7 +252,7 @@ public class PlayerController : MonoBehaviour
             SetColliderCrouch();
             //Debug.Log("You have landed");
 
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.3f);
             //SetAcceleratingOn();
             ResetColliderCrouch();
         }
@@ -353,6 +285,10 @@ public class PlayerController : MonoBehaviour
         _wallKickStatus = 1;
         rb.AddForce(jumpPower * _wallKickDirection, ForceMode.Impulse);
     }
+    public void SetWallKickPrep(int value)
+    {
+        _wallKickStatus = value;
+    }
 
     #endregion
 
@@ -375,11 +311,13 @@ public class PlayerController : MonoBehaviour
     }
     void SetColliderCrouch()
     {
+        _isCrouching = true;
         capsuleCollider.height = _colliderHeightOnCrouch;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeightOnCrouch, 0f);
     }
     void ResetColliderCrouch()
     {
+        _isCrouching = false;
         capsuleCollider.height = _colliderHeight;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeight, 0f);
     }
@@ -407,6 +345,90 @@ public class PlayerController : MonoBehaviour
     void SetAccumulatedDist()
     {
         AchievementManager.instance.UpdateDist(Mathf.Round(rb.linearVelocity.magnitude * Time.deltaTime * 100f) / 100f);
+    }
+    #endregion
+
+    #region Animation
+        void SetAnim()
+    {
+        if(_movement.magnitude < 0.08f)
+        {
+            if(_wallKickStatus == -1)
+            {
+                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                robotAnimator.SetWallKick();
+            }
+            else if(_wallKickStatus == 1)
+            {
+                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                robotAnimator.SetWallKick();
+            }
+            else if(_wallKickStatus == -10)
+            {
+                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                robotAnimator.SetWallKickPrep();
+            }
+            else if(_wallKickStatus == 10)
+            {
+                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                robotAnimator.SetWallKickPrep();
+            }
+            else{
+                if(_jumpAmountCur != jumpAmount)
+                {
+                    robotAnimator.SetJump();
+                }
+                else
+                {
+                    if(_moveSpeedCur == moveSpeedAfterLand)
+                    {
+                        robotAnimator.SetJumpLand();
+                    }
+                    else if(_moveSpeedCur == moveSpeedStunned)
+                    {
+                        robotAnimator.SetDamage();
+                    }
+                    else{
+                        robotAnimator.SetIdle();
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(_isUsingRigidbody)
+            {
+                if(_isCrouching)
+                {
+                    robotAnimator.SetCrouch();
+                }
+            }
+            else
+            {
+                if(_jumpAmountCur != jumpAmount)
+                {
+                    robotAnimator.SetJump();
+                }
+                else
+                {
+                    if(_moveSpeedCur == moveSpeedAfterLand)
+                    {
+                        robotAnimator.SetJumpLand();
+                    }
+                    else if(_moveSpeedCur == moveSpeedStunned)
+                    {
+                        robotAnimator.SetDamage();
+                    }
+                    else
+                    {
+                        robotAnimator.SetRun();
+                    }
+                }
+
+                // Set Avatar rotation
+                robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movement.x, 0f, _movement.z).normalized);
+            }
+        }        
     }
     #endregion
 }
