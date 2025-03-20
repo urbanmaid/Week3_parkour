@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
             {
                 if(triggerKnee.isTriggered)
                 {
-                    Debug.Log("Player has been hanging on the wall");
+                   // Debug.Log("Player has been hanging on the wall");
                     _isUsingRigidbody = true;
                     SetJumpPower();
                 }
@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviour
     {
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
         _moveTimeCur = 0;
-        Debug.Log("Jump Power : " + jumpPowerCur);
+        //Debug.Log("Jump Power : " + jumpPowerCur);
         rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
     }
     IEnumerator CrossObstacle()
@@ -226,7 +226,7 @@ public class PlayerController : MonoBehaviour
         _isUsingRigidbody = true;
         // Step 1, let rigidbody control my body and set force
         rb.AddForce(new Vector3(0f, 1f * jumpPower, 0f), ForceMode.Impulse);
-        Debug.Log("Crossing Obstacle");
+        //Debug.Log("Crossing Obstacle");
 
         // Step 2, go forward
         yield return new WaitForSeconds(0.25f);
@@ -241,14 +241,14 @@ public class PlayerController : MonoBehaviour
     {
         _isUsingRigidbody = true;
         rb.AddForce(new Vector3(0f, 1.6f * jumpPower, 0f), ForceMode.Impulse);
-        Debug.Log("2m Obstacle has been set");
+        //Debug.Log("2m Obstacle has been set");
         
         yield return new WaitForSeconds(0.4f);
         rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
     }
     void CrossObstacleExcessiveHigh()
     {
-        Debug.Log("3m Obstacle has been set");
+        //Debug.Log("3m Obstacle has been set");
         if(!_isCrossingExcessiveHigh)
         {
             StartCoroutine(CrossObstacleHigh());
@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
         {
             _moveSpeedCur = moveSpeedStunned;
             isAccelerating = false;
-            Debug.LogWarning("You are too fast to land off without injury");
+           // Debug.LogWarning("You are too fast to land off without injury");
 
             yield return new WaitForSeconds(0.75f);
             //SetAcceleratingOn();
