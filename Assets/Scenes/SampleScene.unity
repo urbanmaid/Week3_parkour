@@ -2122,16 +2122,6 @@ MonoBehaviour:
   triggerKnee: {fileID: 1874146441}
   triggerSternum: {fileID: 1330773039}
   capsuleCollider: {fileID: 0}
-<<<<<<< HEAD
-  animator: {fileID: 0}
-  moveSpeed: 15
-  moveSpeedMax: 18
-  moveSpeedAfterLand: 16
-  moveSpeedStunned: 1
-  isAccelerating: 1
-  jumpPower: 140
-  crouchPower: 5
-=======
   robotAnimator: {fileID: 1492602083}
   triggerCollisionKnee: {fileID: 645039063}
   triggerCollisionSternum: {fileID: 951914129}
@@ -2143,7 +2133,6 @@ MonoBehaviour:
   isAccelerating: 1
   jumpPower: 140
   crouchPower: 10
->>>>>>> origin/merge_1
   jumpAmount: 1
   _jumpAmountCur: 0
 --- !u!136 &1204644790

@@ -193,14 +193,6 @@ public class PlayerController : MonoBehaviour
             }
             else if(triggerKnee.isTriggered) // If player is only hanging on the wall
             {
-<<<<<<< HEAD
-                if(triggerKnee.isTriggered)
-                {
-                   // Debug.Log("Player has been hanging on the wall");
-                    _isUsingRigidbody = true;
-                    SetJumpPower();
-                }
-=======
                 StartCoroutine(CrossObstacleHigh());
             }
             else if(triggerFeet.isTriggered) // But not certain that it is on the airtime so resets the status
@@ -209,7 +201,6 @@ public class PlayerController : MonoBehaviour
                 //SetJumpPower();
                 _jumpAmountCur = jumpAmount;
                 _isUsingRigidbody = false;
->>>>>>> origin/merge_1
             }
         }
     }
@@ -218,43 +209,6 @@ public class PlayerController : MonoBehaviour
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
         _moveTimeCur = 0;
         //Debug.Log("Jump Power : " + jumpPowerCur);
-<<<<<<< HEAD
-        rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
-    }
-    IEnumerator CrossObstacle()
-    {
-        _isUsingRigidbody = true;
-        // Step 1, let rigidbody control my body and set force
-        rb.AddForce(new Vector3(0f, 1f * jumpPower, 0f), ForceMode.Impulse);
-        //Debug.Log("Crossing Obstacle");
-
-        // Step 2, go forward
-        yield return new WaitForSeconds(0.25f);
-        rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
-
-        // Step 3, return to basis
-        yield return new WaitForSeconds(0.15f);
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(new Vector3(0f, -1f * crouchPower, 0f), ForceMode.Impulse);
-    }
-    IEnumerator CrossObstacleHigh()
-    {
-        _isUsingRigidbody = true;
-        rb.AddForce(new Vector3(0f, 1.6f * jumpPower, 0f), ForceMode.Impulse);
-        //Debug.Log("2m Obstacle has been set");
-        
-        yield return new WaitForSeconds(0.4f);
-        rb.AddForce(new Vector3(0f, 0f, 1.6f * crouchPower), ForceMode.Impulse);
-    }
-    void CrossObstacleExcessiveHigh()
-    {
-        //Debug.Log("3m Obstacle has been set");
-        if(!_isCrossingExcessiveHigh)
-        {
-            StartCoroutine(CrossObstacleHigh());
-            _isCrossingExcessiveHigh = true;
-        }
-=======
         rb.AddForce(_movement, ForceMode.Acceleration);
         rb.AddForce(Vector3.up * jumpPowerCur, ForceMode.Impulse);
     }
@@ -267,7 +221,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _isUsingRigidbody = false;
         rb.AddForce(new Vector3(0f, 0f, 2f * crouchPower), ForceMode.Impulse);
->>>>>>> origin/merge_1
     }
 
     #endregion
@@ -287,7 +240,7 @@ public class PlayerController : MonoBehaviour
         {
             _moveSpeedCur = moveSpeedStunned;
             isAccelerating = false;
-           // Debug.LogWarning("You are too fast to land off without injury");
+            Debug.LogWarning("You are too fast to land off without injury");
 
             yield return new WaitForSeconds(0.75f);
             //SetAcceleratingOn();
