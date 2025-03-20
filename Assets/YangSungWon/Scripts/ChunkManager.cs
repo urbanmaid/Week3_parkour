@@ -8,6 +8,11 @@ public class ChunkManager : MonoBehaviour
     public GameObject[] stage2Chunks; // 스테이지 2: 중간 난이도 청크
     public GameObject[] stage3Chunks; // 스테이지 3: 높은 난이도 청크
 
+    // 각 스테이지의 마지막 청크 (인스펙터에서 지정)
+    public GameObject stage1LastChunk;
+    public GameObject stage2LastChunk;
+    public GameObject stage3LastChunk;
+
     [SerializeField] private Transform player;
     [SerializeField] private float chunkLength = 10f;
     [SerializeField] private float spawnDistance = 30f;
@@ -54,16 +59,36 @@ public class ChunkManager : MonoBehaviour
         }
 
         GameObject chunk;
-        GameObject[] currentChunks = GetCurrentStageChunks();
-        int randomIndex = Random.Range(0, currentChunks.Length);
-        chunk = Instantiate(currentChunks[randomIndex], Vector3.zero, Quaternion.identity);
+
+
+
+        //GameObject[] currentChunks = GetCurrentStageChunks();
+        //int randomIndex = Random.Range(0, currentChunks.Length);
+        //chunk = Instantiate(currentChunks[randomIndex], Vector3.zero, Quaternion.identity);
+
+        // 마지막 청크인지 확인 (10번째 청크 = chunksSpawnedInStage가 9일 때)
+        if (chunksSpawnedInStage == chunksPerStage - 1)
+        {
+            chunk = Instantiate(GetLastChunkForStage(), Vector3.zero, Quaternion.identity);
+            Debug.Log($"스테이지 {currentStage} - 마지막 청크 스폰: {chunk.name}");
+        }
+        else
+        {
+            GameObject[] currentChunks = GetCurrentStageChunks();
+            int randomIndex = Random.Range(0, currentChunks.Length);
+            chunk = Instantiate(currentChunks[randomIndex], Vector3.zero, Quaternion.identity);
+            Debug.Log($"스테이지 {currentStage} - 청크 {chunksSpawnedInStage + 1}/{chunksPerStage}: {currentChunks[randomIndex].name}");
+        }
+
+
+
 
         chunk.transform.position = new Vector3(0, 0, lastChunkEndPosition);
         lastChunkEndPosition += chunkLength;
         activeChunks.Add(chunk);
 
         chunksSpawnedInStage++;
-        Debug.Log($"스테이지 {currentStage} - 청크 {chunksSpawnedInStage}/{chunksPerStage}: {currentChunks[randomIndex].name}");
+        //Debug.Log($"스테이지 {currentStage} - 청크 {chunksSpawnedInStage}/{chunksPerStage}: {currentChunks[randomIndex].name}");
     }
 
     void RemoveOldChunks()
@@ -102,6 +127,17 @@ public class ChunkManager : MonoBehaviour
             case 2: return stage2Chunks;
             case 3: return stage3Chunks;
             default: return stage1Chunks; // 안전장치
+        }
+    }
+
+    GameObject GetLastChunkForStage()
+    {
+        switch (currentStage)
+        {
+            case 1: return stage1LastChunk;
+            case 2: return stage2LastChunk;
+            case 3: return stage3LastChunk;
+            default: return stage1LastChunk; // 안전장치
         }
     }
 
