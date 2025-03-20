@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveInput;
 
     [Header("Anim")]
-    private int _wallKickStatus = 0;
+    [SerializeField] int _wallKickStatus = 0;
     private bool _isCrouching = false;
 
     #endregion
@@ -121,7 +122,8 @@ public class PlayerController : MonoBehaviour
     #region Move
     void Move()
     {
-        _movement = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized * _moveSpeedCur;
+        // Only Z Axis(Front-rear can be applied its accelation)
+        _movement =  Vector3.Scale(new Vector3(_moveInput.x, 0f, _moveInput.y).normalized, new Vector3(moveSpeed, 1f, _moveSpeedCur));
         if(!_isUsingRigidbody)
         {
             // If player tend to stay in wall, make it unable
@@ -243,18 +245,14 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("You are too fast to land off without injury");
 
             yield return new WaitForSeconds(0.75f);
-            //SetAcceleratingOn();
         }
         else
         {
             _moveSpeedCur = moveSpeedAfterLand;
             isAccelerating = false;
-            SetColliderCrouch();
             //Debug.Log("You have landed");
 
             yield return new WaitForSeconds(0.3f);
-            //SetAcceleratingOn();
-            ResetColliderCrouch();
         }
         SetAcceleratingOn();
     }
@@ -287,7 +285,11 @@ public class PlayerController : MonoBehaviour
     }
     public void SetWallKickPrep(int value)
     {
-        _wallKickStatus = value;
+        if(_jumpAmountCur != jumpAmount) //!triggerFeet.isTriggered
+        {
+            Debug.Log("You need to be on air to set the prep mode of anim.");
+            _wallKickStatus = value;
+        }
     }
 
     #endregion
@@ -296,7 +298,10 @@ public class PlayerController : MonoBehaviour
     // Fix Log #1
     IEnumerator Crouch()
     {
-        if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f)
+        if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f && !_isCrouching
+        && (Math.Abs(_moveInput.x) > 0.88f || Math.Abs(_moveInput.y) > 0.88f))
+        // Crouch should be done when is on the ground, moving, not crouching
+        // and its moving direction is not diagonal
         {
             // Reset Crouch Status
             _isUsingRigidbody = true;
@@ -307,6 +312,10 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             _isUsingRigidbody = false;
             ResetColliderCrouch();
+
+            //After that makes it able to re-crouch after awhile
+            yield return new WaitForSeconds(0.25f);
+            _isCrouching = false;
         }
     }
     void SetColliderCrouch()
@@ -317,7 +326,6 @@ public class PlayerController : MonoBehaviour
     }
     void ResetColliderCrouch()
     {
-        _isCrouching = false;
         capsuleCollider.height = _colliderHeight;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeight, 0f);
     }
