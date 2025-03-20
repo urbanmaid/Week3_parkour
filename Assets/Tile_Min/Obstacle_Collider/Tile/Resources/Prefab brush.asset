@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Prefab brush
   m_EditorClassIdentifier: 
   m_Cells:
-  - m_GameObject: {fileID: 2977937843176530068, guid: 2fd1712a5dcd0544eb8c470d31481912, type: 3}
+  - m_GameObject: {fileID: 7939437199724816173, guid: daba2944a1082b246aa361d9c072abc4, type: 3}
     m_Offset: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     m_Orientation: {x: 0, y: 0, z: 0, w: 1}
