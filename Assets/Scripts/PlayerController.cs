@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
     {
         if(_jumpAmountCur > 0) // If on the ground
         {
-            if(triggerFeet.isTriggered)
+            if(triggerFeet.isTriggered && !_isCrouching)
             {
                 _jumpAmountCur--;
                 if(triggerSternum.isTriggered) // 3m Jump should be done after jump
@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
     {
         // 점프력 계산
         _isUsingRigidbody = true;
-        float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.25f);
+        float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.05f);
         _moveTimeCur = 0f;
 
         // 점프는 단일 Impulse로 통합
@@ -321,7 +321,6 @@ public class PlayerController : MonoBehaviour
         // Crouch should be done when is on the ground, moving, not crouching
         // and its moving direction is not diagonal
         {
-            // Reset Crouch Status
             _isUsingRigidbody = true;
             rb.AddForce(crouchPower * new Vector3(_movement.x, rb.linearVelocity.y / crouchPower, _movement.z), ForceMode.Impulse);
             SetColliderCrouch();
