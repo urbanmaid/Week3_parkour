@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7684001602025287867
 Transform:
@@ -47,7 +47,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8705860418140905351
 Transform:
@@ -76,9 +76,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8705860418140905351}
     m_Modifications:
+    - target: {fileID: 1481929588778716289, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3125233228839926721, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_Name
       value: ObstacleLine1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125233228839926721, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3390898685723226845, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -120,6 +128,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6350535605060406247, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6381083350106626326, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -138,6 +154,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8705860418140905351}
     m_Modifications:
+    - target: {fileID: 1739105526299771379, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2998891948292874797, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3667364643619978311, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4476329466504700846, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5505281231369076536, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6055993564604415676, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -178,9 +214,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6561416975222456693, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622430710701899451, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6785088282953434868, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
       propertyPath: m_Name
       value: 3ObstacleLine6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6785088282953434868, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7663761734410493285, guid: 45a821bde9fb10f47a9e9de06b967a84, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -203,6 +255,10 @@ PrefabInstance:
     - target: {fileID: 7099400492232962763, guid: 3b9dd9c1d47da924aa0ece54c268bfcc, type: 3}
       propertyPath: m_Name
       value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7099400492232962763, guid: 3b9dd9c1d47da924aa0ece54c268bfcc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8418455843978162525, guid: 3b9dd9c1d47da924aa0ece54c268bfcc, type: 3}
       propertyPath: m_LocalScale.z
@@ -266,9 +322,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8705860418140905351}
     m_Modifications:
+    - target: {fileID: 1481929588778716289, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3125233228839926721, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_Name
       value: ObstacleLine1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125233228839926721, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3390898685723226845, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -310,6 +374,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6350535605060406247, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6381083350106626326, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -328,9 +400,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8705860418140905351}
     m_Modifications:
+    - target: {fileID: 1481929588778716289, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3125233228839926721, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_Name
       value: ObstacleLine1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125233228839926721, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3390898685723226845, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -371,6 +451,14 @@ PrefabInstance:
     - target: {fileID: 3390898685723226845, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350535605060406247, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6381083350106626326, guid: 01cc24eba5e54474c8ba007f5ab7025d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
