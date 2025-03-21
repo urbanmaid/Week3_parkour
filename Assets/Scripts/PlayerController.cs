@@ -143,6 +143,9 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector3(_movement.x, rb.linearVelocity.y, _movement.z); // Y축은 점프에만 영향
         }
 
+        // Check is moveable
+        //if(!triggerFeet.isTriggered)
+
         // Check move duration
         if(_movement.magnitude < 0.08f)
         {
@@ -203,7 +206,7 @@ public class PlayerController : MonoBehaviour
     void SetJumpPower()
     {
         // Calculate jump power
-        _isUsingRigidbody = true;
+        //_isUsingRigidbody = true;
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.05f);
         _moveTimeCur = 0f;
 
@@ -302,7 +305,7 @@ public class PlayerController : MonoBehaviour
             ResetColliderCrouch();
 
             //After that makes it able to re-crouch after awhile
-            yield return new WaitForSeconds(0.25f);
+            //yield return new WaitForSeconds(0.1f);
             _isCrouching = false;
         }
     }
