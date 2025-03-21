@@ -3,30 +3,38 @@ using System.Collections.Generic;
 
 public class ChunkManager : MonoBehaviour
 {
-    // ³­ÀÌµµº° Ã»Å© ÇÁ¸®ÆÕ ¹è¿­
-    public GameObject[] stage1Chunks; // ½ºÅ×ÀÌÁö 1: ±âº» ³­ÀÌµµ Ã»Å©
-    public GameObject[] stage2Chunks; // ½ºÅ×ÀÌÁö 2: Áß°£ ³­ÀÌµµ Ã»Å©
-    public GameObject[] stage3Chunks; // ½ºÅ×ÀÌÁö 3: ³ôÀº ³­ÀÌµµ Ã»Å©
+    // ë‚œì´ë„ë³„ ì²­í¬ í”„ë¦¬íŒ¹ ë°°ì—´
+    public GameObject[] stage1Chunks;
+    public GameObject[] stage2Chunks;
+    public GameObject[] stage3Chunks;
 
-    // °¢ ½ºÅ×ÀÌÁöÀÇ ¸¶Áö¸· Ã»Å© (ÀÎ½ºÆåÅÍ¿¡¼­ ÁöÁ¤)
+    // ê° ìŠ¤í…Œì´ì§€ì˜ ë§ˆì§€ë§‰ ì²­í¬
     public GameObject stage1LastChunk;
     public GameObject stage2LastChunk;
     public GameObject stage3LastChunk;
 
     [SerializeField] private Transform player;
-    [SerializeField] private float chunkLength = 10f;
+    [SerializeField] private float chunkLength = 50f; // ë„¤ê°€ ì›í•˜ëŠ” 50ìœ¼ë¡œ ë³€ê²½
     [SerializeField] private float spawnDistance = 30f;
-    [SerializeField] private int chunksPerStage = 10; // ½ºÅ×ÀÌÁö´ç Ã»Å© ¼ö (10À¸·Î ¼³Á¤)
+    [SerializeField] private int chunksPerStage = 10;
+
+    // ìŠ¤í…Œì´ì§€ë³„ ë†’ì´ ì„¤ì •
+    [SerializeField] private float stage1Height = 0f;   // ìŠ¤í…Œì´ì§€ 1 ì‹œì‘ ë†’ì´
+    [SerializeField] private float stage2Height = 10f;  // ìŠ¤í…Œì´ì§€ 2 ì‹œì‘ ë†’ì´
+    [SerializeField] private float stage3Height = 20f;  // ìŠ¤í…Œì´ì§€ 3 ì‹œì‘ ë†’ì´
 
     private List<GameObject> activeChunks = new List<GameObject>();
     private float lastChunkEndPosition = 0f;
-    private int currentStage = 1; // ÇöÀç ½ºÅ×ÀÌÁö (1, 2, 3)
-    private int chunksSpawnedInStage = 0; // ÇöÀç ½ºÅ×ÀÌÁö¿¡¼­ ½ºÆùµÈ Ã»Å© ¼ö
-    private bool isGameFinished = false; // °ÔÀÓ Á¾·á ¿©ºÎ
+    private int currentStage = 1;
+    private int chunksSpawnedInStage = 0;
+    private bool isGameFinished = false;
+    private float currentHeight = 0f; // í˜„ì¬ ìŠ¤í…Œì´ì§€ì˜ Yì¶• ë†’ì´
 
     void Start()
     {
-        // ÃÊ±â Ã»Å© »ı¼º (½ºÅ×ÀÌÁö 1 ½ÃÀÛ)
+        // ì´ˆê¸° ë†’ì´ ì„¤ì •
+        currentHeight = stage1Height;
+        player.position = new Vector3(0, currentHeight + 1f, -20f); // ì²­í¬ ì‹œì‘ì  ê·¼ì²˜
         SpawnInitialChunks();
     }
 
@@ -43,7 +51,6 @@ public class ChunkManager : MonoBehaviour
 
     void SpawnInitialChunks()
     {
-        // Ã³À½¿¡ ¸î °³ÀÇ Ã»Å©¸¦ ¹Ì¸® »ı¼º (¿¹: 5°³)
         for (int i = 0; i < 5; i++)
         {
             SpawnChunk();
@@ -55,40 +62,29 @@ public class ChunkManager : MonoBehaviour
         if (chunksSpawnedInStage >= chunksPerStage)
         {
             MoveToNextStage();
-            if (isGameFinished) return; // °ÔÀÓ ³¡³ª¸é ´õ ÀÌ»ó »ı¼º ¾È ÇÔ
+            if (isGameFinished) return;
         }
 
         GameObject chunk;
-
-
-
-        //GameObject[] currentChunks = GetCurrentStageChunks();
-        //int randomIndex = Random.Range(0, currentChunks.Length);
-        //chunk = Instantiate(currentChunks[randomIndex], Vector3.zero, Quaternion.identity);
-
-        // ¸¶Áö¸· Ã»Å©ÀÎÁö È®ÀÎ (10¹øÂ° Ã»Å© = chunksSpawnedInStage°¡ 9ÀÏ ¶§)
         if (chunksSpawnedInStage == chunksPerStage - 1)
         {
             chunk = Instantiate(GetLastChunkForStage(), Vector3.zero, Quaternion.identity);
-            Debug.Log($"½ºÅ×ÀÌÁö {currentStage} - ¸¶Áö¸· Ã»Å© ½ºÆù: {chunk.name}");
+            Debug.Log($"ìŠ¤í…Œì´ì§€ {currentStage} - ë§ˆì§€ë§‰ ì²­í¬ ìŠ¤í°: {chunk.name} at Y={currentHeight}");
         }
         else
         {
             GameObject[] currentChunks = GetCurrentStageChunks();
             int randomIndex = Random.Range(0, currentChunks.Length);
-            chunk = Instantiate(currentChunks[randomIndex], Vector3.zero, Quaternion.identity);
-            Debug.Log($"½ºÅ×ÀÌÁö {currentStage} - Ã»Å© {chunksSpawnedInStage + 1}/{chunksPerStage}: {currentChunks[randomIndex].name}");
+            chunk = Instantiate(currentChunks[randomIndex], Vector3.zero, currentChunks[randomIndex].transform.rotation);
+            Debug.Log($"ìŠ¤í…Œì´ì§€ {currentStage} - ì²­í¬ {chunksSpawnedInStage + 1}/{chunksPerStage}: {currentChunks[randomIndex].name}");
         }
 
-
-
-
-        chunk.transform.position = new Vector3(0, 0, lastChunkEndPosition);
+        // Yì¶• ë†’ì´ë¥¼ í˜„ì¬ ìŠ¤í…Œì´ì§€ ë†’ì´ì— ë§ì¶° ì„¤ì •
+        chunk.transform.position = new Vector3(0, currentHeight, lastChunkEndPosition);
         lastChunkEndPosition += chunkLength;
         activeChunks.Add(chunk);
 
         chunksSpawnedInStage++;
-        //Debug.Log($"½ºÅ×ÀÌÁö {currentStage} - Ã»Å© {chunksSpawnedInStage}/{chunksPerStage}: {currentChunks[randomIndex].name}");
     }
 
     void RemoveOldChunks()
@@ -107,16 +103,25 @@ public class ChunkManager : MonoBehaviour
     void MoveToNextStage()
     {
         currentStage++;
-        chunksSpawnedInStage = 0; // »õ ½ºÅ×ÀÌÁö ½ÃÀÛ ½Ã Ä«¿îÆ® ¸®¼Â
+        chunksSpawnedInStage = 0;
 
-        if (currentStage > 3)
+        // ìŠ¤í…Œì´ì§€ ì „í™˜ ì‹œ ë†’ì´ ì—…ë°ì´íŠ¸
+        switch (currentStage)
         {
-            FinishGame();
+            case 2:
+                currentHeight = stage2Height;
+                break;
+            case 3:
+                currentHeight = stage3Height;
+                break;
+            case 4:
+                FinishGame();
+                return;
         }
-        else
-        {
-            Debug.Log($"½ºÅ×ÀÌÁö {currentStage} ½ÃÀÛ!");
-        }
+
+        // í”Œë ˆì´ì–´ ë†’ì´ ì¡°ì •
+        player.position = new Vector3(player.position.x, currentHeight + 1f, player.position.z);
+        Debug.Log($"ìŠ¤í…Œì´ì§€ {currentStage} ì‹œì‘! ë†’ì´: {currentHeight}");
     }
 
     GameObject[] GetCurrentStageChunks()
@@ -126,7 +131,7 @@ public class ChunkManager : MonoBehaviour
             case 1: return stage1Chunks;
             case 2: return stage2Chunks;
             case 3: return stage3Chunks;
-            default: return stage1Chunks; // ¾ÈÀüÀåÄ¡
+            default: return stage1Chunks;
         }
     }
 
@@ -137,14 +142,13 @@ public class ChunkManager : MonoBehaviour
             case 1: return stage1LastChunk;
             case 2: return stage2LastChunk;
             case 3: return stage3LastChunk;
-            default: return stage1LastChunk; // ¾ÈÀüÀåÄ¡
+            default: return stage1LastChunk;
         }
     }
 
     void FinishGame()
     {
         isGameFinished = true;
-        Debug.Log("¸ğµç ½ºÅ×ÀÌÁö Å¬¸®¾î! °ÔÀÓ Á¾·á.");
-        // ¿©±â¼­ ¸¶¹«¸® ·ÎÁ÷ Ãß°¡ °¡´É (¿¹: ¿£µù È­¸é Ç¥½Ã)
+        Debug.Log("ëª¨ë“  ìŠ¤í…Œì´ì§€ í´ë¦¬ì–´! ê²Œì„ ì¢…ë£Œ.");
     }
 }
