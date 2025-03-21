@@ -408,13 +408,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4965391762000996877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373915aaf1d831c4b9b8d820b54d2ad7, type: 3}
+  m_Script: {fileID: 11500000, guid: a6841d45fa6102d4ab188c41c694556f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   triggerFeet: {fileID: 1357176763067622944}
   triggerToe: {fileID: 5511046430885455912}
   triggerShoulderL: {fileID: 1439355479924654066}
   triggerShoulderR: {fileID: 3236367849774349064}
+<<<<<<< Updated upstream
   triggerKnee: {fileID: 4414176522057075314}
   triggerSternum: {fileID: 2441565759989984360}
   capsuleCollider: {fileID: 0}
@@ -431,6 +432,14 @@ MonoBehaviour:
   crouchPower: 10
   jumpAmount: 1
   _jumpAmountCur: 0
+=======
+  triggerKnee: {fileID: 4375283643660760359}
+  triggerSternum: {fileID: 3235729389373312016}
+  capsuleCollider: {fileID: 6515997090933434920}
+  triggerCollisionKnee: {fileID: 4375283643660760359}
+  triggerCollisionSternum: {fileID: 3235729389373312016}
+  robotAnimator: {fileID: 6835269177373522067}
+>>>>>>> Stashed changes
 --- !u!54 &4708319863459136210
 Rigidbody:
   m_ObjectHideFlags: 0
