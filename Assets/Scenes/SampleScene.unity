@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &171659441 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-  m_PrefabInstance: {fileID: 386137653562207558}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a8ae3e36b82a4d47b7ca4376cdea7c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &192783912
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 192783912}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 8, z: 118}
+  m_LocalPosition: {x: 0, y: 8, z: 120}
   m_LocalScale: {x: 0.7, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1646,8 +1635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790d0be5a85ec524ea04370cd393df58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countCollisionLow: 0
-  countCollisionHigh: 0
   countDist: 0
 --- !u!1 &1174850256
 GameObject:
@@ -2645,30 +2632,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: triggerKnee
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: fallMultiplier
-      value: 1.275
-      objectReference: {fileID: 0}
-    - target: {fileID: 2456768992115990869, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 171659441}
-    - target: {fileID: 2456768992115990869, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetTriggeredManual
-      objectReference: {fileID: 0}
-    - target: {fileID: 2456768992115990869, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: TriggerListener, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2456768992115990869, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3101142696423628960, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2709,24 +2672,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3354044376140182343, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745219090179925945, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.18
-      objectReference: {fileID: 0}
     - target: {fileID: 4965391762000996877, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6050943812716282369, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4165996083306022723, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

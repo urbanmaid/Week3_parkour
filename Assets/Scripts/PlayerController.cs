@@ -12,16 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TriggerListener triggerToe;
     [SerializeField] TriggerListener triggerShoulderL;
     [SerializeField] TriggerListener triggerShoulderR;
-    //[SerializeField] TriggerListener triggerKnee;
-    [SerializeField] TriggerListener triggerSternum;
     [SerializeField] CapsuleCollider capsuleCollider;
     private float _colliderHeight;
     private float _colliderHeightOnCrouch = 0.94f;
-
-
-    [Header("Sensing - Collision")]
-    [SerializeField] TriggerListener triggerCollisionKnee; // Message when collided on low obstacle
-    [SerializeField] TriggerListener triggerCollisionSternum; // Message when collided on high obstacle
 
     [Header("Expression")]
     [SerializeField] RobotAnimator robotAnimator;
@@ -45,10 +38,10 @@ public class PlayerController : MonoBehaviour
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
     private Vector3 _movement;
-    private Vector2 _moveInput;
+    [SerializeField] Vector2 _moveInput;
 
     [Header("Anim")]
-    [SerializeField] int _wallKickStatus = 0;
+    private int _wallKickStatus = 0;
     private bool _isCrouching = false;
 
     #endregion
@@ -181,14 +174,7 @@ public class PlayerController : MonoBehaviour
             if(triggerFeet.isTriggered && !_isCrouching)
             {
                 _jumpAmountCur--;
-                if(triggerSternum.isTriggered) // 3m Jump should be done after jump
-                {
-                    StartCoroutine(CrossObstacleHigh());
-                }
-                else
-                {
-                    SetJumpPower();
-                }
+                SetJumpPower();
             }
 
         }
@@ -206,15 +192,9 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 WallKickR();
             }
-            else if(triggerSternum.isTriggered) // If player is only hanging on the wall
-            {
-                StartCoroutine(CrossObstacleHigh());
-            }
-            
             else if(triggerFeet.isTriggered) // But not certain that it is on the airtime so resets the status
             {
                 Debug.LogWarning("Has some issues while jump amount is not charged even on the ground");
-                //SetJumpPower();
                 _jumpAmountCur = jumpAmount;
                 //_isUsingRigidbody = false;
             }
@@ -222,26 +202,16 @@ public class PlayerController : MonoBehaviour
     }
     void SetJumpPower()
     {
-        // 점프력 계산
+        // Calculate jump power
         _isUsingRigidbody = true;
         float jumpPowerCur = jumpPower + (_moveTimeCur * jumpPower * 0.05f);
         _moveTimeCur = 0f;
 
-        // 점프는 단일 Impulse로 통합
+        // Set all the jump pattern should be Impulse
         Vector3 jumpForce = (_movement.normalized + Vector3.up) * jumpPowerCur;
         rb.AddForce(jumpForce, ForceMode.Impulse);
 
         Debug.Log($"Jump Power: {jumpPowerCur}");
-    }
-    IEnumerator CrossObstacleHigh()
-    {
-        _isUsingRigidbody = true;
-        rb.AddForce(new Vector3(0f, 2f * jumpPower, 0f), ForceMode.Impulse);
-        Debug.Log("2m Obstacle has been set");
-        
-        yield return new WaitForSeconds(0.5f);
-        _isUsingRigidbody = false;
-        rb.AddForce(new Vector3(0f, 0f, 2f * crouchPower), ForceMode.Impulse);
     }
 
     #endregion
@@ -317,7 +287,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator Crouch()
     {
         if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f && !_isCrouching
-        && (Math.Abs(_moveInput.x) > 0.88f || Math.Abs(_moveInput.y) > 0.88f))
+        && _moveInput.y > 0.88f)
+        //(Math.Abs(_moveInput.x) > 0.88f || Math.Abs(_moveInput.y) > 0.88f)
         // Crouch should be done when is on the ground, moving, not crouching
         // and its moving direction is not diagonal
         {
@@ -349,24 +320,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Achievement
-    public void SetCollisionLow()
-    {
-        if(capsuleCollider.height == _colliderHeight)
-        {
-            AchievementManager.instance.UpdateCollisionLow();
-        }
-    }
-    public void SetCollisionHigh()
-    {
-        if(capsuleCollider.height == _colliderHeight)
-        {
-            if((rb.linearVelocity.y > -0.02f || 0.02f > rb.linearVelocity.y)
-            && triggerFeet.isTriggered) // If player is on the ground and velocity axis y is nearly 0
-            {
-                AchievementManager.instance.UpdateCollisionHigh();
-            }
-        }
-    }
     void SetAccumulatedDist()
     {
         AchievementManager.instance.UpdateDist(Mathf.Round(rb.linearVelocity.magnitude * Time.deltaTime * 100f) / 100f);
@@ -374,7 +327,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Animation
-        void SetAnim()
+    void SetAnim()
     {
         if(_movement.magnitude < 0.08f)
         {
