@@ -12,17 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TriggerListener triggerToe;
     [SerializeField] TriggerListener triggerShoulderL;
     [SerializeField] TriggerListener triggerShoulderR;
-    //[SerializeField] TriggerListener triggerKnee;
-    //[SerializeField] TriggerListener triggerSternum;
     [SerializeField] CapsuleCollider capsuleCollider;
     private float _colliderHeight;
     private float _colliderHeightOnCrouch = 0.94f;
-
-    /*
-    [Header("Sensing - Collision")]
-    [SerializeField] TriggerListener triggerCollisionKnee; // Message when collided on low obstacle
-    [SerializeField] TriggerListener triggerCollisionSternum; // Message when collided on high obstacle
-    */
 
     [Header("Expression")]
     [SerializeField] RobotAnimator robotAnimator;
@@ -46,10 +38,10 @@ public class PlayerController : MonoBehaviour
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
     private Vector3 _movement;
-    private Vector2 _moveInput;
+    [SerializeField] Vector2 _moveInput;
 
     [Header("Anim")]
-    [SerializeField] int _wallKickStatus = 0;
+    private int _wallKickStatus = 0;
     private bool _isCrouching = false;
 
     #endregion
@@ -200,13 +192,6 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 WallKickR();
             }
-            /*
-            else if(triggerSternum.isTriggered) // If player is only hanging on the wall
-            {
-                StartCoroutine(CrossObstacleHigh());
-            }
-            */
-            
             else if(triggerFeet.isTriggered) // But not certain that it is on the airtime so resets the status
             {
                 Debug.LogWarning("Has some issues while jump amount is not charged even on the ground");
@@ -228,18 +213,6 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log($"Jump Power: {jumpPowerCur}");
     }
-    /*
-    IEnumerator CrossObstacleHigh()
-    {
-        _isUsingRigidbody = true;
-        rb.AddForce(new Vector3(0f, 2f * jumpPower, 0f), ForceMode.Impulse);
-        Debug.Log("2m Obstacle has been set");
-        
-        yield return new WaitForSeconds(0.5f);
-        _isUsingRigidbody = false;
-        rb.AddForce(new Vector3(0f, 0f, 2f * crouchPower), ForceMode.Impulse);
-    }
-    */
 
     #endregion
 
@@ -354,7 +327,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Animation
-        void SetAnim()
+    void SetAnim()
     {
         if(_movement.magnitude < 0.08f)
         {
