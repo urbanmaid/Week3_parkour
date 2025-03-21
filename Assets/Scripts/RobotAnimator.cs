@@ -41,7 +41,7 @@ public class RobotAnimator : MonoBehaviour
     }
 
     // Update is called once per frame
-    internal void SetIdle()
+    public void SetIdle()
     {
         for(int i = 0; i < objectAnimated.Count; i++)
         {
