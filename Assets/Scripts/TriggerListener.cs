@@ -16,7 +16,7 @@ public class TriggerListener : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider collision)
+    public virtual void OnTriggerEnter(Collider collision)
     {
         if(targetOfTrigger != "") //If this element uses targetOfTrigger
         {
@@ -44,7 +44,7 @@ public class TriggerListener : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider collision)
+    public virtual void OnTriggerExit(Collider collision)
     {
         if(targetOfTrigger != "") //If this element uses targetOfTrigger
         {
