@@ -34,7 +34,7 @@ public class ChunkManager : MonoBehaviour
     {
         // 초기 높이 설정
         currentHeight = stage1Height;
-        player.position = new Vector3(0, currentHeight + 1f, -20f); // 청크 시작점 근처
+        player.position = new Vector3(0, currentHeight + 1f, 2f); // 청크 시작점 근처
         SpawnInitialChunks();
     }
 
@@ -68,7 +68,7 @@ public class ChunkManager : MonoBehaviour
         GameObject chunk;
         if (chunksSpawnedInStage == chunksPerStage - 1)
         {
-            chunk = Instantiate(GetLastChunkForStage(), Vector3.zero, Quaternion.identity);
+            chunk = Instantiate(GetLastChunkForStage(), Vector3.zero, GetLastChunkForStage().transform.rotation);
             Debug.Log($"스테이지 {currentStage} - 마지막 청크 스폰: {chunk.name} at Y={currentHeight}");
         }
         else
