@@ -108,13 +108,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Size3_Level2
       objectReference: {fileID: 0}
-    - target: {fileID: 6898481713424124111, guid: 1bfc28430021b914b81de2e102afc079, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8767760126643561896, guid: 1bfc28430021b914b81de2e102afc079, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8767760126643561896, guid: 1bfc28430021b914b81de2e102afc079, type: 3}
       propertyPath: m_LocalPosition.y
