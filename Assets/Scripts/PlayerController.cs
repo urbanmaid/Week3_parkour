@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -304,7 +305,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator Crouch()
     {
         if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f && !_isCrouching
-        && _moveInput.y > 0.88f)
+        && _moveInput.y > 0.88f && !(Math.Abs(_moveInput.x) > 0.88f && _moveInput.y < 0.88f))
         // Crouch should be done when is on the ground, moving, not crouching
         // and its moving direction is not diagonal
         {
@@ -348,7 +349,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Collided into obstacle");
             _isCollided = true;
 
-            _isUsingRigidbody = true;
+            rb.linearVelocity = Vector3.zero;
             transform.Translate(Vector3.back * 1.6f);
 
             Invoke(nameof(EndCollision), 1f);
@@ -358,7 +359,6 @@ public class PlayerController : MonoBehaviour
     void EndCollision()
     {
         Debug.Log("Collided has ended");
-        _isUsingRigidbody = false;
         _isCollided = false;
     }
     #endregion
@@ -429,10 +429,6 @@ public class PlayerController : MonoBehaviour
                 {
                     robotAnimator.SetCrouch();
                 }
-                else if(_isCollided)
-                {
-                    robotAnimator.SetDeath();
-                }
             }
             else
             {
@@ -454,10 +450,18 @@ public class PlayerController : MonoBehaviour
                     {
                         robotAnimator.SetRun();
                     }
+
+                    if(_isCollided)
+                    {
+                        robotAnimator.SetDeath();
+                    }
                 }
 
-                // Set Avatar rotation
-                robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movement.x, 0f, _movement.z).normalized);
+                if(!_isCollided)
+                {
+                    // Set Avatar rotation
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movement.x, 0f, _movement.z).normalized);
+                }
             }
         }        
     }
