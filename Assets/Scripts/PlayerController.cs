@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -50,7 +51,8 @@ public class PlayerController : MonoBehaviour
     private int _wallKickStatus = 0;
     private bool _isCrouching = false;
     private bool _isCollided = false;
-    [SerializeField] Camera playerCamera;
+    [SerializeField] CameraFX playerCamera;
+    [SerializeField] PlayerFollower playerFollower;
 
     #endregion
 
@@ -95,6 +97,12 @@ public class PlayerController : MonoBehaviour
         CheckFallenSpeed();
 
         SetAnim();
+
+        playerCamera.UpdateCamera();
+        if(playerFollower)
+        {
+            playerFollower.DoUpdate();
+        }
     }
 
     void AssignControl()
@@ -247,6 +255,7 @@ public class PlayerController : MonoBehaviour
         _wallKickStatus = 0;
 
         // Add playerCamera push into original place
+        playerCamera.ResetFOV();
         
         if(_isRiskyToLand)
         {
@@ -288,6 +297,8 @@ public class PlayerController : MonoBehaviour
         _wallKickStatus = -1;
 
         // Add playerCamera pullup
+        playerCamera.SetFOVZoomOut();
+
         rb.AddForce(jumpPower * Vector3.Scale(_wallKickDirection, new Vector3(-1f, 1f, 1f)), ForceMode.Impulse);
     }
     void WallKickR()
@@ -296,6 +307,8 @@ public class PlayerController : MonoBehaviour
         _wallKickStatus = 1;
 
         // Add playerCamera pullup
+        playerCamera.SetFOVZoomOut();
+
         rb.AddForce(jumpPower * _wallKickDirection, ForceMode.Impulse);
     }
     public void SetWallKickPrep(int value)
@@ -318,11 +331,13 @@ public class PlayerController : MonoBehaviour
             _isUsingRigidbody = true;
             rb.AddForce(crouchPower * new Vector3(_movement.x, rb.linearVelocity.y / crouchPower, _movement.z), ForceMode.Impulse);
             SetColliderCrouch();
+            playerCamera.SetFOVZoomOut();
 
             // Reset Crouch Status
             yield return new WaitForSeconds(0.5f);
             _isUsingRigidbody = false;
             ResetColliderCrouch();
+            playerCamera.ResetFOV();
 
             //After that makes it able to re-crouch after awhile
             //yield return new WaitForSeconds(0.1f);
@@ -352,19 +367,20 @@ public class PlayerController : MonoBehaviour
         if(triggerCollision.isTriggered
         && (!_isCrouching)) // || jumpAmount == _jumpAmountCur
         {
-            Debug.Log("Collided into obstacle");
+            //Debug.Log("Collided into obstacle");
             _isCollided = true;
 
             rb.linearVelocity = Vector3.zero;
             transform.Translate(Vector3.back * 1.6f);
 
+            StartCoroutine(playerCamera.ApplyOffsetFXDamage2());
             Invoke(nameof(EndCollision), 1f);
         }
     }
 
     void EndCollision()
     {
-        Debug.Log("Collided has ended");
+        //Debug.Log("Collided has ended");
         _isCollided = false;
     }
     #endregion
