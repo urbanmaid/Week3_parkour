@@ -342,6 +342,7 @@ MonoBehaviour:
   triggerToe: {fileID: 5511046430885455912}
   triggerShoulderL: {fileID: 1439355479924654066}
   triggerShoulderR: {fileID: 3236367849774349064}
+  triggerCollision: {fileID: 1357176763067622944}
   capsuleCollider: {fileID: 0}
   robotAnimator: {fileID: 6835269177373522067}
   moveSpeed: 10
@@ -355,6 +356,7 @@ MonoBehaviour:
   jumpAmount: 1
   fallMultiplier: 1.275
   _moveInput: {x: 0, y: 0}
+  playerCamera: {fileID: 0}
 --- !u!54 &4708319863459136210
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -609,12 +611,12 @@ GameObject:
   - component: {fileID: 1357176763067622944}
   - component: {fileID: 3944443274708923603}
   m_Layer: 0
-  m_Name: TriggerFeet
+  m_Name: TriggerCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &918490980972185612
 Transform:
   m_ObjectHideFlags: 0
@@ -624,8 +626,8 @@ Transform:
   m_GameObject: {fileID: 7955268453987342768}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.8, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 599549949779016968}
@@ -649,7 +651,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1343133711796288677}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: ResetJumpStatus
+        m_MethodName: SetCollided
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
