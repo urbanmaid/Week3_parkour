@@ -6206,6 +6206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chat: {fileID: 174744748}
+  particle: {fileID: 1938385738}
   speed: 2
   rotationSpeed: 1.5
 --- !u!1 &2056365181
