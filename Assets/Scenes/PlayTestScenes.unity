@@ -515,7 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0, y: 0, z: 0}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -1656,6 +1656,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eff669ad143e78149b1739371f259114, type: 3}
+--- !u!114 &2062763876 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+  m_PrefabInstance: {fileID: 386137653562207558}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8ae3e36b82a4d47b7ca4376cdea7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2067187859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1714,6 +1725,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 918490980972185612, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 918490980972185612, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 918490980972185612, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 918490980972185612, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: triggerCollision
+      value: 
+      objectReference: {fileID: 2062763876}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1204644789}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCollided
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: actionWhenTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3101142696423628960, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8
@@ -1757,6 +1816,14 @@ PrefabInstance:
     - target: {fileID: 4965391762000996877, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7955268453987342768, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_Name
+      value: TriggerCollision
+      objectReference: {fileID: 0}
+    - target: {fileID: 7955268453987342768, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

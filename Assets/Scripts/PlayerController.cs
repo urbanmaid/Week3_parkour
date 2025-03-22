@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TriggerListener triggerToe;
     [SerializeField] TriggerListener triggerShoulderL;
     [SerializeField] TriggerListener triggerShoulderR;
+    [SerializeField] TriggerListener triggerCollision;
     [SerializeField] CapsuleCollider capsuleCollider;
     private float _colliderHeight;
     private float _colliderHeightOnCrouch = 0.94f;
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
     [Header("Anim")]
     private int _wallKickStatus = 0;
     private bool _isCrouching = false;
+    private bool _isCollided = false;
+    [SerializeField] Camera playerCamera;
 
     #endregion
 
@@ -126,7 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         // Only Z Axis(Front-rear can be applied its accelation)
         _movement =  Vector3.Scale(new Vector3(_moveInput.x, 0f, _moveInput.y).normalized, new Vector3(moveSpeed, 1f, _moveSpeedCur));
-        if(!_isUsingRigidbody)
+        if(!_isUsingRigidbody && !_isCollided)
         {
             // If player tend to stay in wall, make it unable
             if((triggerShoulderL.isTriggered && _moveInput.x > 0f)
@@ -174,9 +177,15 @@ public class PlayerController : MonoBehaviour
     {
         if(_jumpAmountCur > 0) // If on the ground
         {
-            if(triggerFeet.isTriggered && !_isCrouching)
+            if(triggerFeet.isTriggered)
             {
                 _jumpAmountCur--;
+                if(_isCrouching)
+                {
+                    //ResetColliderCrouch();
+                    _isUsingRigidbody = false;
+                    _isCrouching = false;
+                }
                 SetJumpPower();
             }
 
@@ -229,12 +238,15 @@ public class PlayerController : MonoBehaviour
         _jumpAmountCur = jumpAmount;
         _isUsingRigidbody = false;
         _wallKickStatus = 0;
+
+        // Add playerCamera push into original place
         
         if(_isRiskyToLand)
         {
             _moveSpeedCur = moveSpeedStunned;
             isAccelerating = false;
             Debug.LogWarning("You are too fast to land off without injury");
+            // Set playerCamera shakes alot
 
             yield return new WaitForSeconds(0.75f);
         }
@@ -242,7 +254,7 @@ public class PlayerController : MonoBehaviour
         {
             _moveSpeedCur = moveSpeedAfterLand;
             isAccelerating = false;
-            //Debug.Log("You have landed");
+            // Set playerCamera shakes little
 
             yield return new WaitForSeconds(0.3f);
         }
@@ -267,31 +279,32 @@ public class PlayerController : MonoBehaviour
     {
         _isUsingRigidbody = true;
         _wallKickStatus = -1;
+
+        // Add playerCamera pullup
         rb.AddForce(jumpPower * Vector3.Scale(_wallKickDirection, new Vector3(-1f, 1f, 1f)), ForceMode.Impulse);
     }
     void WallKickR()
     {
         _isUsingRigidbody = true;
         _wallKickStatus = 1;
+
+        // Add playerCamera pullup
         rb.AddForce(jumpPower * _wallKickDirection, ForceMode.Impulse);
     }
     public void SetWallKickPrep(int value)
     {
-        if(_jumpAmountCur != jumpAmount) //!triggerFeet.isTriggered
+        if(_jumpAmountCur != jumpAmount)
         {
-            Debug.Log("You need to be on air to set the prep mode of anim.");
             _wallKickStatus = value;
         }
     }
     #endregion
 
     #region Crouch
-    // Fix Log #1
     IEnumerator Crouch()
     {
         if(_jumpAmountCur > 0 && _moveInput.magnitude > 0.08f && !_isCrouching
         && _moveInput.y > 0.88f)
-        //(Math.Abs(_moveInput.x) > 0.88f || Math.Abs(_moveInput.y) > 0.88f)
         // Crouch should be done when is on the ground, moving, not crouching
         // and its moving direction is not diagonal
         {
@@ -311,14 +324,42 @@ public class PlayerController : MonoBehaviour
     }
     void SetColliderCrouch()
     {
+        // Set playerCamera FOV longer
+
         _isCrouching = true;
         capsuleCollider.height = _colliderHeightOnCrouch;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeightOnCrouch, 0f);
     }
     void ResetColliderCrouch()
     {
+        // Reset playerCamera FOV
+
         capsuleCollider.height = _colliderHeight;
         capsuleCollider.center = new Vector3(0f, 0.5f * _colliderHeight, 0f);
+    }
+    #endregion
+
+    #region Collision
+    public void SetCollided()
+    {
+        if(triggerCollision.isTriggered
+        && (!_isCrouching)) // || jumpAmount == _jumpAmountCur
+        {
+            Debug.Log("Collided into obstacle");
+            _isCollided = true;
+
+            _isUsingRigidbody = true;
+            transform.Translate(Vector3.back * 1.6f);
+
+            Invoke(nameof(EndCollision), 1f);
+        }
+    }
+
+    void EndCollision()
+    {
+        Debug.Log("Collided has ended");
+        _isUsingRigidbody = false;
+        _isCollided = false;
     }
     #endregion
 
@@ -372,6 +413,11 @@ public class PlayerController : MonoBehaviour
                     else{
                         robotAnimator.SetIdle();
                     }
+
+                    if(_isCollided)
+                    {
+                        robotAnimator.SetDeath();
+                    }
                 }
             }
         }
@@ -382,6 +428,10 @@ public class PlayerController : MonoBehaviour
                 if(_isCrouching)
                 {
                     robotAnimator.SetCrouch();
+                }
+                else if(_isCollided)
+                {
+                    robotAnimator.SetDeath();
                 }
             }
             else
