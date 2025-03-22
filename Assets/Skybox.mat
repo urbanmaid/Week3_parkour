@@ -44,7 +44,7 @@ Material:
     m_Floats:
     - _AtmosphereThickness: 1
     - _EnableExternalAlpha: 0
-    - _Exposure: 0.5
+    - _Exposure: 0.25
     - _SunDisk: 2
     - _SunSize: 0.04
     - _SunSizeConvergence: 5
