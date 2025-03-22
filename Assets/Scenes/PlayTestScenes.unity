@@ -1742,6 +1742,14 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: moveSpeedMax
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: triggerCollision
       value: 
       objectReference: {fileID: 2062763876}

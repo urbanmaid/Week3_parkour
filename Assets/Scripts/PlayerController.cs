@@ -40,7 +40,10 @@ public class PlayerController : MonoBehaviour
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
     private Vector3 _movement;
+    private Vector3 _movementLerp;
     [SerializeField] Vector2 _moveInput;
+    private readonly float lerpDelay = 10f;
+
 
     [Header("Anim")]
     private int _wallKickStatus = 0;
@@ -130,21 +133,23 @@ public class PlayerController : MonoBehaviour
     {
         // Only Z Axis(Front-rear can be applied its accelation)
         _movement =  Vector3.Scale(new Vector3(_moveInput.x, 0f, _moveInput.y).normalized, new Vector3(moveSpeed, 1f, _moveSpeedCur));
+        _movementLerp = Vector3.Lerp(_movementLerp, _movement, Time.deltaTime * lerpDelay);
+
         if(!_isUsingRigidbody && !_isCollided)
         {
             // If player tend to stay in wall, make it unable
-            if((triggerShoulderL.isTriggered && _moveInput.x > 0f)
-             ||(triggerShoulderR.isTriggered && _moveInput.x < 0f))
+            if((triggerShoulderL.isTriggered && _movementLerp.x > 0f)
+             ||(triggerShoulderR.isTriggered && _movementLerp.x < 0f))
             {
-                _movement.x = 0f;
+                _movementLerp.x = 0f;
             }
-            if(triggerToe.isTriggered && _moveInput.y > 0f)
+            if(triggerToe.isTriggered && _movementLerp.y > 0f)
             {
-                _movement.z = 0f;
+                _movementLerp.z = 0f;
             }
 
             // Move with linearVelocity
-            rb.linearVelocity = new Vector3(_movement.x, rb.linearVelocity.y, _movement.z); // Y축은 점프에만 영향
+            rb.linearVelocity = new Vector3(_movementLerp.x, rb.linearVelocity.y, _movementLerp.z); // Y축은 점프에만 영향
         }
 
         // Check is moveable
@@ -460,7 +465,7 @@ public class PlayerController : MonoBehaviour
                 if(!_isCollided)
                 {
                     // Set Avatar rotation
-                    robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movement.x, 0f, _movement.z).normalized);
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movementLerp.x, 0f, _movementLerp.z).normalized);
                 }
             }
         }        
