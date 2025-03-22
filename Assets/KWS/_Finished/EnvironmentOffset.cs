@@ -6,11 +6,11 @@ public class EnvironmentOffset : MonoBehaviour
 {
     private List<float> oceanWaveSpeed = new List<float>
     {
-        0.5f, 0.8f, 1f
+        0.2f, 0.8f, 1f
     };
     private List<float> oceanWaveHeight = new List<float>
     {
-        2f, 5f, 8f
+        0.2f, 0.5f, 0.8f
     };
 
     private List<Color32> skyboxTint = new List<Color32>
@@ -66,13 +66,14 @@ public class EnvironmentOffset : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            SetStageTheme(currStage);
-            currStage++;
-            currStage %= 3;
-        }
-    }
+    // TEST Key Mapping
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        SetStageTheme(currStage);
+    //        currStage++;
+    //        currStage %= 3;
+    //    }
+    //}
 }

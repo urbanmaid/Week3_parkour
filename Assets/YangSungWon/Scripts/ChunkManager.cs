@@ -108,11 +108,14 @@ public class ChunkManager : MonoBehaviour
         {
             case 2:
                 currentHeight = stage2Height;
+                gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(1);
                 break;
             case 3:
                 currentHeight = stage3Height;
+                gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(2);
                 break;
             case 4:
+                gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(0);
                 FinishGame();
                 return;
         }
