@@ -76,10 +76,12 @@ public class PlayerController : MonoBehaviour
         _colliderHeight = capsuleCollider.height;
     }
 
+    /*
     void OnEnable()
     {
         _inputActions.Player.Enable(); // Player Action Map 활성화
     }
+    */
 
     void OnDisable()
     {

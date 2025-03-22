@@ -8,7 +8,7 @@ public class CameraFX : MonoBehaviour
     Camera cameraComponenet;
     CinemachineFollow cinemachineFollow;
     CinemachineHardLookAt cinemachineLook;
-    [SerializeField] bool fixCamInCenter = true;
+    //[SerializeField] bool fixCamInCenter = true;
     [SerializeField] GameObject posTarget;
     //float 
 
