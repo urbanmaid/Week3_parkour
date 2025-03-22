@@ -13,7 +13,11 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private float chunkLength = 50f;
     [SerializeField] private float spawnDistance = 30f;
-    [SerializeField] private int chunksPerStage = 10;
+
+    // 스테이지별 청크 개수
+    [SerializeField] private int stage1ChunkCount = 10;
+    [SerializeField] private int stage2ChunkCount = 12;
+    [SerializeField] private int stage3ChunkCount = 15;
 
     [SerializeField] private float stage1Height = 0f;
     [SerializeField] private float stage2Height = 10f;
@@ -29,7 +33,7 @@ public class ChunkManager : MonoBehaviour
     void Start()
     {
         currentHeight = stage1Height;
-        player.position = new Vector3(0, currentHeight + 1f, 2f); // 초기 위치만 설정
+        player.position = new Vector3(0, currentHeight + 1f, 2f);
         SpawnInitialChunks();
     }
 
@@ -54,6 +58,7 @@ public class ChunkManager : MonoBehaviour
 
     void SpawnChunk()
     {
+        int chunksPerStage = GetChunksPerStage(); // 현재 스테이지의 청크 개수 가져오기
         if (chunksSpawnedInStage >= chunksPerStage)
         {
             MoveToNextStage();
@@ -99,7 +104,6 @@ public class ChunkManager : MonoBehaviour
         currentStage++;
         chunksSpawnedInStage = 0;
 
-        // 높이만 업데이트, 플레이어 위치는 건드리지 않음
         switch (currentStage)
         {
             case 2:
@@ -113,7 +117,7 @@ public class ChunkManager : MonoBehaviour
                 return;
         }
 
-        Debug.Log($"스테이지 {currentStage} 시작! 높이: {currentHeight}");
+        Debug.Log($"스테이지 {currentStage} 시작! 높이: {currentHeight}, 청크 개수: {GetChunksPerStage()}");
     }
 
     GameObject[] GetCurrentStageChunks()
@@ -135,6 +139,17 @@ public class ChunkManager : MonoBehaviour
             case 2: return stage2LastChunk;
             case 3: return stage3LastChunk;
             default: return stage1LastChunk;
+        }
+    }
+
+    int GetChunksPerStage()
+    {
+        switch (currentStage)
+        {
+            case 1: return stage1ChunkCount;
+            case 2: return stage2ChunkCount;
+            case 3: return stage3ChunkCount;
+            default: return stage1ChunkCount; // 안전장치
         }
     }
 

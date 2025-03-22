@@ -178,7 +178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: moveSpeed
-      value: 28
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: crouchPower
@@ -186,7 +186,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: moveSpeedAfterLand
-      value: 27
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 3101142696423628960, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -287,16 +287,32 @@ MonoBehaviour:
   - {fileID: 7791156423489592137, guid: f1017b867633962449e22b23fac607f2, type: 3}
   - {fileID: 4511611216335701622, guid: 55b284cb9f9f5b945bcaf9c93f84b446, type: 3}
   stage2Chunks:
-  - {fileID: 3801429485036925471, guid: 85151e00f9c3e774081b5ab315de98f4, type: 3}
+  - {fileID: 555844073966498864, guid: 7401e7d38ab3548439bd4f58ec55259d, type: 3}
+  - {fileID: 3135089754748930245, guid: 125d39f59e8e9014daa69b67033e552b, type: 3}
+  - {fileID: 5579059080690243999, guid: 7bf170f590c79af4eaaa9e2b578d3598, type: 3}
+  - {fileID: 4718346510285499141, guid: 898751aecc6fad146a6650ef34fe2d60, type: 3}
+  - {fileID: 2221002722640961340, guid: bc6ec80ef4161e049ae59b8e4aadfc95, type: 3}
+  - {fileID: 1253216933410083058, guid: 3ef007a567bd3224baaba9dc698a79cb, type: 3}
+  - {fileID: 250978358067472880, guid: 13e475a86cded844c8c2a0932b4534af, type: 3}
+  - {fileID: 4695387731450313932, guid: 552850c90e95ea2489bf786c20aeb737, type: 3}
   stage3Chunks:
-  - {fileID: 3801429485036925471, guid: 85151e00f9c3e774081b5ab315de98f4, type: 3}
+  - {fileID: 8476647481697041471, guid: 888c4fedabd08204380f302f395628cf, type: 3}
+  - {fileID: 6460696072139815074, guid: 8f7dac17e7517974ba39af274649c07a, type: 3}
+  - {fileID: 8297733226815131525, guid: 61dd010f8ae02c14e9910320619a4f0f, type: 3}
+  - {fileID: 4197567818493487553, guid: 43783c4bef7f9ac42bb9f2287354a355, type: 3}
+  - {fileID: 8154028995257949104, guid: af395bd7bb8cfc143a6b43e67515883c, type: 3}
+  - {fileID: 7641523835242278127, guid: d7be847c63af99f478f20040071c6500, type: 3}
+  - {fileID: 5983519747845454332, guid: 937fbf9f249fc7d4f93310a5df8e25b8, type: 3}
+  - {fileID: 1070738484874757225, guid: 06757161711381b45925eb639bd82829, type: 3}
   stage1LastChunk: {fileID: 1632596930519786103, guid: 717866ed14a7d5b47a1e4a97e520706a, type: 3}
   stage2LastChunk: {fileID: 1632596930519786103, guid: 717866ed14a7d5b47a1e4a97e520706a, type: 3}
   stage3LastChunk: {fileID: 1632596930519786103, guid: 717866ed14a7d5b47a1e4a97e520706a, type: 3}
   player: {fileID: 328536579}
   chunkLength: 50
   spawnDistance: 150
-  chunksPerStage: 30
+  stage1ChunkCount: 15
+  stage2ChunkCount: 20
+  stage3ChunkCount: 25
   stage1Height: 0
   stage2Height: 2.5
   stage3Height: 5
