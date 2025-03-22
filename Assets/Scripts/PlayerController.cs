@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
@@ -229,7 +230,7 @@ public class PlayerController : MonoBehaviour
         Vector3 jumpForce = (_movement.normalized + Vector3.up) * jumpPowerCur;
         rb.AddForce(jumpForce, ForceMode.Impulse);
 
-        Debug.Log($"Jump Power: {jumpPowerCur}");
+        //Debug.Log($"Jump Power: {jumpPowerCur}");
     }
 
     #endregion

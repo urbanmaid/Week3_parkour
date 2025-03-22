@@ -3,38 +3,33 @@ using System.Collections.Generic;
 
 public class ChunkManager : MonoBehaviour
 {
-    // 난이도별 청크 프리팹 배열
     public GameObject[] stage1Chunks;
     public GameObject[] stage2Chunks;
     public GameObject[] stage3Chunks;
-
-    // 각 스테이지의 마지막 청크
     public GameObject stage1LastChunk;
     public GameObject stage2LastChunk;
     public GameObject stage3LastChunk;
 
     [SerializeField] private Transform player;
-    [SerializeField] private float chunkLength = 50f; // 네가 원하는 50으로 변경
+    [SerializeField] private float chunkLength = 50f;
     [SerializeField] private float spawnDistance = 30f;
     [SerializeField] private int chunksPerStage = 10;
 
-    // 스테이지별 높이 설정
-    [SerializeField] private float stage1Height = 0f;   // 스테이지 1 시작 높이
-    [SerializeField] private float stage2Height = 10f;  // 스테이지 2 시작 높이
-    [SerializeField] private float stage3Height = 20f;  // 스테이지 3 시작 높이
+    [SerializeField] private float stage1Height = 0f;
+    [SerializeField] private float stage2Height = 10f;
+    [SerializeField] private float stage3Height = 20f;
 
     private List<GameObject> activeChunks = new List<GameObject>();
     private float lastChunkEndPosition = 0f;
     private int currentStage = 1;
     private int chunksSpawnedInStage = 0;
     private bool isGameFinished = false;
-    private float currentHeight = 0f; // 현재 스테이지의 Y축 높이
+    private float currentHeight = 0f;
 
     void Start()
     {
-        // 초기 높이 설정
         currentHeight = stage1Height;
-        player.position = new Vector3(0, currentHeight + 1f, -20f); // 청크 시작점 근처
+        player.position = new Vector3(0, currentHeight + 1f, 2f); // 초기 위치만 설정
         SpawnInitialChunks();
     }
 
@@ -79,7 +74,6 @@ public class ChunkManager : MonoBehaviour
             Debug.Log($"스테이지 {currentStage} - 청크 {chunksSpawnedInStage + 1}/{chunksPerStage}: {currentChunks[randomIndex].name}");
         }
 
-        // Y축 높이를 현재 스테이지 높이에 맞춰 설정
         chunk.transform.position = new Vector3(0, currentHeight, lastChunkEndPosition);
         lastChunkEndPosition += chunkLength;
         activeChunks.Add(chunk);
@@ -105,7 +99,7 @@ public class ChunkManager : MonoBehaviour
         currentStage++;
         chunksSpawnedInStage = 0;
 
-        // 스테이지 전환 시 높이 업데이트
+        // 높이만 업데이트, 플레이어 위치는 건드리지 않음
         switch (currentStage)
         {
             case 2:
@@ -119,8 +113,6 @@ public class ChunkManager : MonoBehaviour
                 return;
         }
 
-        // 플레이어 높이 조정
-        player.position = new Vector3(player.position.x, currentHeight + 1f, player.position.z);
         Debug.Log($"스테이지 {currentStage} 시작! 높이: {currentHeight}");
     }
 
