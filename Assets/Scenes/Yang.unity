@@ -330,9 +330,9 @@ MonoBehaviour:
   player: {fileID: 328536579}
   chunkLength: 50
   spawnDistance: 150
-  stage1ChunkCount: 15
-  stage2ChunkCount: 20
-  stage3ChunkCount: 25
+  stage1ChunkCount: 5
+  stage2ChunkCount: 10
+  stage3ChunkCount: 15
   stage1Height: 0
   stage2Height: 2.5
   stage3Height: 5
@@ -682,7 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LookAtOffset: {x: 0, y: 2.2, z: 0}
+  LookAtOffset: {x: 0, y: 3.24, z: 0}
 --- !u!114 &604909565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,7 +701,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 4, z: -8}
+  FollowOffset: {x: 0, y: 8.8, z: -14.09}
 --- !u!114 &604909566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,8 +812,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604909562}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11043153, y: 0, z: 0, w: 0.9938837}
-  m_LocalPosition: {x: 0, y: 4, z: -8}
+  m_LocalRotation: {x: 0.18681979, y: 0, z: 0, w: 0.9823942}
+  m_LocalPosition: {x: 0, y: 8.8, z: -14.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -941,8 +941,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1276954874}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11043153, y: 0, z: 0, w: 0.9938837}
-  m_LocalPosition: {x: 0, y: 4, z: -8}
+  m_LocalRotation: {x: 0.18681979, y: 0, z: 0, w: 0.9823942}
+  m_LocalPosition: {x: 0, y: 8.8, z: -14.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
