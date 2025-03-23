@@ -71,5 +71,6 @@ public class Canvas : MonoBehaviour
     public void FadeOut()
     {
         StartCoroutine(CloseCurtain());
+        GameManager.instance.LoadNextScene();
     }
 }

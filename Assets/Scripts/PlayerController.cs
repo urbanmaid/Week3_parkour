@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Vector2 _moveInput;
     private readonly float lerpDelay = 10f;
 
+    public float fallOffset = 0f;
+
 
     [Header("Anim")]
     private int _wallKickStatus = 0;
@@ -106,6 +108,11 @@ public class PlayerController : MonoBehaviour
         if(playerFollower)
         {
             playerFollower.DoUpdate();
+        }
+
+        if (gameObject.transform.position.y < fallOffset - 15f)
+        {
+            GameManager.instance.ResetPlayerPosition();
         }
     }
 

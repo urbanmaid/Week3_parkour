@@ -154,6 +154,7 @@ MonoBehaviour:
   - 5
   - 20
   - 35
+  environmentOffset: {fileID: 171992869}
 --- !u!4 &19598720
 Transform:
   m_ObjectHideFlags: 0
@@ -315,9 +316,9 @@ MonoBehaviour:
   player: {fileID: 328536579}
   chunkLength: 50
   spawnDistance: 150
-  stage1ChunkCount: 15
-  stage2ChunkCount: 25
-  stage3ChunkCount: 30
+  stage1ChunkCount: 3
+  stage2ChunkCount: 3
+  stage3ChunkCount: 3
   stage1Height: 0
   stage2Height: 12
   stage3Height: 24

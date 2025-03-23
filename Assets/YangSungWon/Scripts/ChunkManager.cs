@@ -46,6 +46,11 @@ public class ChunkManager : MonoBehaviour
             SpawnChunk();
             RemoveOldChunks();
         }
+
+        if (currentStage > 1 && chunksSpawnedInStage == spawnDistance / chunkLength)
+        {
+            GameManager.instance.SetCurStage(currentStage);
+        }
     }
 
     void SpawnInitialChunks()
@@ -160,5 +165,22 @@ public class ChunkManager : MonoBehaviour
     {
         isGameFinished = true;
         Debug.Log("모든 스테이지 클리어! 게임 종료.");
+    }
+
+    public float GetStageHeight()
+    {
+        if (currentStage == 1)
+        {
+            return stage1Height;
+        }
+        else if (currentStage == 2)
+        {
+            return stage2Height;
+        }
+        else if (currentStage == 3)
+        {
+            return stage3Height;
+        }
+        return 0;
     }
 }
