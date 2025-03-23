@@ -221,10 +221,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4978945724023814179, guid: d46eccca87c4844419cb3e89242c11d1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.86
-      objectReference: {fileID: 0}
     - target: {fileID: 5151598240491286188, guid: d46eccca87c4844419cb3e89242c11d1, type: 3}
       propertyPath: m_Name
       value: 5ObstacleLineHigh
