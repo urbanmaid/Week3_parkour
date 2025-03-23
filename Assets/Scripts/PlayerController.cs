@@ -397,48 +397,43 @@ public class PlayerController : MonoBehaviour
     #region Animation
     void SetAnim()
     {
-        if(_movement.magnitude < 0.08f)
+        if (_movementLerp.magnitude < 0.08f)
         {
-            if(_wallKickStatus == -1)
+            if (_wallKickStatus == -1)
             {
                 robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
                 robotAnimator.SetWallKick();
             }
-            else if(_wallKickStatus == 1)
+            else if (_wallKickStatus == 1)
             {
                 robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
                 robotAnimator.SetWallKick();
             }
-            else if(_wallKickStatus == -10)
+            else if (_wallKickStatus == -10)
             {
                 robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
                 robotAnimator.SetWallKickPrep();
             }
-            else if(_wallKickStatus == 10)
+            else if (_wallKickStatus == 10)
             {
                 robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
                 robotAnimator.SetWallKickPrep();
             }
-            else{
-                if(_jumpAmountCur != jumpAmount)
+            else
+            {
+                if (_jumpAmountCur != jumpAmount)
                 {
                     robotAnimator.SetJump();
                 }
                 else
                 {
-                    if(_moveSpeedCur == moveSpeedAfterLand)
+                    robotAnimator.SetJumpLand();
+                    if (_moveSpeedCur == moveSpeed)
                     {
-                        robotAnimator.SetJumpLand();
-                    }
-                    else if(_moveSpeedCur == moveSpeedStunned)
-                    {
-                        robotAnimator.SetDamage();
-                    }
-                    else{
                         robotAnimator.SetIdle();
                     }
 
-                    if(_isCollided)
+                    if (_isCollided)
                     {
                         robotAnimator.SetDeath();
                     }
@@ -447,26 +442,26 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if(_isUsingRigidbody)
+            if (_isUsingRigidbody)
             {
-                if(_isCrouching)
+                if (_isCrouching)
                 {
                     robotAnimator.SetCrouch();
                 }
             }
             else
             {
-                if(_jumpAmountCur != jumpAmount)
+                if (_jumpAmountCur != jumpAmount)
                 {
                     robotAnimator.SetJump();
                 }
                 else
                 {
-                    if(_moveSpeedCur == moveSpeedAfterLand)
+                    if (_moveSpeedCur == moveSpeedAfterLand)
                     {
                         robotAnimator.SetJumpLand();
                     }
-                    else if(_moveSpeedCur == moveSpeedStunned)
+                    else if (_moveSpeedCur == moveSpeedStunned)
                     {
                         robotAnimator.SetDamage();
                     }
@@ -475,19 +470,19 @@ public class PlayerController : MonoBehaviour
                         robotAnimator.SetRun();
                     }
 
-                    if(_isCollided)
+                    if (_isCollided)
                     {
                         robotAnimator.SetDeath();
                     }
                 }
 
-                if(!_isCollided)
+                if (!_isCollided)
                 {
                     // Set Avatar rotation
                     robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movementLerp.x, 0f, _movementLerp.z).normalized);
                 }
             }
-        }        
+        }
     }
     #endregion
 }

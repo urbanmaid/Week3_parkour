@@ -14,7 +14,6 @@ public class Robot : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        targetRotation = Quaternion.Euler(0, 180, 0);  //회전 목표
         particle.Stop();
     }
     public void MoveForward(int vector)
@@ -34,6 +33,7 @@ public class Robot : MonoBehaviour
     {
         float time = 0;
         Quaternion startRotation = transform.rotation;
+        targetRotation = Quaternion.Euler(0, 180, 0);  //회전 목표
 
         while (time < 1)
         {
