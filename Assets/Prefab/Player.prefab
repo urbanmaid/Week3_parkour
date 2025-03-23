@@ -345,18 +345,20 @@ MonoBehaviour:
   triggerCollision: {fileID: 1357176763067622944}
   capsuleCollider: {fileID: 0}
   robotAnimator: {fileID: 6835269177373522067}
-  moveSpeed: 10
-  moveSpeedMax: 14
-  moveSpeedAfterLand: 8
+  jumpFXParticle: {fileID: 2261642397160132249}
+  moveSpeed: 24
+  moveSpeedMax: 28
+  moveSpeedAfterLand: 24
   moveSpeedStunned: 4
   _moveTimeMax: 2
   isAccelerating: 1
-  jumpPower: 140
-  crouchPower: 10
+  jumpPower: 160
+  crouchPower: 1
   jumpAmount: 1
   fallMultiplier: 1.275
   _moveInput: {x: 0, y: 0}
   playerCamera: {fileID: 0}
+  playerFollower: {fileID: 0}
 --- !u!54 &4708319863459136210
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -627,7 +629,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.8, z: 0.5}
-  m_LocalScale: {x: 0.5, y: 0.8, z: 0.2}
+  m_LocalScale: {x: 0.25, y: 0.8, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 599549949779016968}
@@ -645,7 +647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTriggered: 0
-  targetOfTrigger: 
+  targetOfTrigger: Climbable
   actionWhenTriggered:
     m_PersistentCalls:
       m_Calls:
@@ -661,7 +663,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isTargetUsedAsExclusion: 0
+  isTargetUsedAsExclusion: 1
 --- !u!65 &3944443274708923603
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -740,6 +742,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9f995129da8f6a41b4322d8804214b6, type: 3}
+--- !u!198 &2261642397160132249 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3416560642014586740, guid: a9f995129da8f6a41b4322d8804214b6, type: 3}
+  m_PrefabInstance: {fileID: 3461289036934375917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6835269177373522067 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7985789306397200766, guid: a9f995129da8f6a41b4322d8804214b6, type: 3}

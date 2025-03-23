@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 5344630517366232720}
   m_Layer: 0
   m_Name: Hbeam (1)
-  m_TagString: Untagged
+  m_TagString: RestrictedToJump
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -672,7 +672,7 @@ GameObject:
   - component: {fileID: 500495147672887809}
   m_Layer: 0
   m_Name: Woodstack
-  m_TagString: Untagged
+  m_TagString: RestrictedToJump
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -968,7 +968,7 @@ GameObject:
   - component: {fileID: 7119533381737983033}
   m_Layer: 0
   m_Name: Panel (5)
-  m_TagString: Untagged
+  m_TagString: RestrictedToJump
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
