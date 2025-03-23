@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IntroManager : MonoBehaviour
+public class OuttroManager : MonoBehaviour
 {
-    static IntroManager _instance;
+    static OuttroManager _instance;
     public RobotAnimator robotAnimator;
-    public GameObject Ocean;
-    public Canvas canvas;
     public Robot robot;
     public Ocean ocean;
-    public static IntroManager Instance { get { return _instance; } }
+    public Ocean2 ocean2;
+    public Block block;
+    public static OuttroManager Instance { get { return _instance; } }
 
 
     void Awake()
@@ -17,10 +17,10 @@ public class IntroManager : MonoBehaviour
         if (_instance == null)
             _instance = this;
 
-        Ocean = FindAnyObjectByType<Ocean>().gameObject;
         robotAnimator = FindAnyObjectByType<RobotAnimator>();
         robot = FindAnyObjectByType<Robot>();
-        canvas = FindAnyObjectByType<Canvas>();
         ocean = FindAnyObjectByType<Ocean>();
+        ocean2 = FindAnyObjectByType<Ocean2>();
+        block = FindAnyObjectByType<Block>();
     }
 }

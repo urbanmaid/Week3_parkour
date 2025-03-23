@@ -204,6 +204,14 @@ PrefabInstance:
       propertyPath: moveSpeedAfterLand
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: targetOfTrigger
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357176763067622944, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: isTargetUsedAsExclusion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3101142696423628960, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -324,18 +332,18 @@ MonoBehaviour:
   - {fileID: 7641523835242278127, guid: d7be847c63af99f478f20040071c6500, type: 3}
   - {fileID: 5983519747845454332, guid: 937fbf9f249fc7d4f93310a5df8e25b8, type: 3}
   - {fileID: 1070738484874757225, guid: 06757161711381b45925eb639bd82829, type: 3}
-  stage1LastChunk: {fileID: 1632596930519786103, guid: 717866ed14a7d5b47a1e4a97e520706a, type: 3}
-  stage2LastChunk: {fileID: 1632596930519786103, guid: 717866ed14a7d5b47a1e4a97e520706a, type: 3}
-  stage3LastChunk: {fileID: 1632596930519786103, guid: 717866ed14a7d5b47a1e4a97e520706a, type: 3}
+  stage1LastChunk: {fileID: 6681189671164531406, guid: 5f1acaab074eb6042bc53f04fb334a76, type: 3}
+  stage2LastChunk: {fileID: 6681189671164531406, guid: 5f1acaab074eb6042bc53f04fb334a76, type: 3}
+  stage3LastChunk: {fileID: 6681189671164531406, guid: 5f1acaab074eb6042bc53f04fb334a76, type: 3}
   player: {fileID: 328536579}
   chunkLength: 50
   spawnDistance: 150
-  stage1ChunkCount: 5
-  stage2ChunkCount: 10
-  stage3ChunkCount: 15
+  stage1ChunkCount: 2
+  stage2ChunkCount: 2
+  stage3ChunkCount: 30
   stage1Height: 0
-  stage2Height: 2.5
-  stage3Height: 5
+  stage2Height: 12
+  stage3Height: 24
 --- !u!114 &171992869
 MonoBehaviour:
   m_ObjectHideFlags: 0
