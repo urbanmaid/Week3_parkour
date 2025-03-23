@@ -25,7 +25,7 @@ public class ChunkManager : MonoBehaviour
 
     private List<GameObject> activeChunks = new List<GameObject>();
     private float lastChunkEndPosition = 0f;
-    private int currentStage = 1;
+    public int currentStage = 1;
     private int chunksSpawnedInStage = 0;
     private bool isGameFinished = false;
     private float currentHeight = 0f;

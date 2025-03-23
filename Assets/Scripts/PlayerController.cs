@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private float _colliderHeightOnCrouch = 0.94f;
 
     [Header("Expression")]
-    [SerializeField] RobotAnimator robotAnimator;
+    public RobotAnimator robotAnimator;
 
     [Header("Control")]
     [SerializeField] float moveSpeed = 10f;
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
     }
     void CheckFallenSpeed()
     {
-        if(rb.linearVelocity.y < -25f)
+        if(rb.linearVelocity.y < -18f)
         {
             _isRiskyToLand = true;
         }
@@ -265,6 +265,7 @@ public class PlayerController : MonoBehaviour
             isAccelerating = false;
             Debug.LogWarning("You are too fast to land off without injury");
             // Set playerCamera shakes alot
+            StartCoroutine(playerCamera.ApplyOffsetFXDamage2());
 
             yield return new WaitForSeconds(0.75f);
         }
@@ -379,11 +380,20 @@ public class PlayerController : MonoBehaviour
             Invoke(nameof(EndCollision), 1f);
         }
     }
+    public void SetCollidedStatus(bool value)
+    {
+        _isCollided = value;
+    }
 
     void EndCollision()
     {
         //Debug.Log("Collided has ended");
         _isCollided = false;
+    }
+
+    internal void SetUsingRigidbody(bool value)
+    {
+        _isUsingRigidbody = value;
     }
     #endregion
 
@@ -397,92 +407,99 @@ public class PlayerController : MonoBehaviour
     #region Animation
     void SetAnim()
     {
-        if (_movementLerp.magnitude < 0.08f)
+        if(robotAnimator.gameObject)
         {
-            if (_wallKickStatus == -1)
+            if (_movementLerp.magnitude < 0.08f)
             {
-                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
-                robotAnimator.SetWallKick();
-            }
-            else if (_wallKickStatus == 1)
-            {
-                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
-                robotAnimator.SetWallKick();
-            }
-            else if (_wallKickStatus == -10)
-            {
-                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
-                robotAnimator.SetWallKickPrep();
-            }
-            else if (_wallKickStatus == 10)
-            {
-                robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
-                robotAnimator.SetWallKickPrep();
-            }
-            else
-            {
-                if (_jumpAmountCur != jumpAmount)
+                if (_wallKickStatus == -1)
                 {
-                    robotAnimator.SetJump();
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                    robotAnimator.SetWallKick();
+                }
+                else if (_wallKickStatus == 1)
+                {
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                    robotAnimator.SetWallKick();
+                }
+                else if (_wallKickStatus == -10)
+                {
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                    robotAnimator.SetWallKickPrep();
+                }
+                else if (_wallKickStatus == 10)
+                {
+                    robotAnimator.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                    robotAnimator.SetWallKickPrep();
                 }
                 else
                 {
-                    robotAnimator.SetJumpLand();
-                    if (_moveSpeedCur == moveSpeed)
+                    if (_jumpAmountCur != jumpAmount)
                     {
-                        robotAnimator.SetIdle();
-                    }
-
-                    if (_isCollided)
-                    {
-                        robotAnimator.SetDeath();
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (_isUsingRigidbody)
-            {
-                if (_isCrouching)
-                {
-                    robotAnimator.SetCrouch();
-                }
-            }
-            else
-            {
-                if (_jumpAmountCur != jumpAmount)
-                {
-                    robotAnimator.SetJump();
-                }
-                else
-                {
-                    if (_moveSpeedCur == moveSpeedAfterLand)
-                    {
-                        robotAnimator.SetJumpLand();
-                    }
-                    else if (_moveSpeedCur == moveSpeedStunned)
-                    {
-                        robotAnimator.SetDamage();
+                        robotAnimator.SetJump();
                     }
                     else
                     {
-                        robotAnimator.SetRun();
-                    }
+                        robotAnimator.SetJumpLand();
+                        if (_moveSpeedCur == moveSpeedStunned)
+                        {
+                            robotAnimator.SetDamage();
+                        }
+                        if (_moveSpeedCur == moveSpeed)
+                        {
+                            robotAnimator.SetIdle();
+                        }
 
-                    if (_isCollided)
-                    {
-                        robotAnimator.SetDeath();
+                        if (_isCollided)
+                        {
+                            robotAnimator.SetDeath();
+                        }
                     }
                 }
-
-                if (!_isCollided)
+            }
+            else
+            {
+                if (_isUsingRigidbody)
                 {
-                    // Set Avatar rotation
-                    robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movementLerp.x, 0f, _movementLerp.z).normalized);
+                    if (_isCrouching)
+                    {
+                        robotAnimator.SetCrouch();
+                    }
+                }
+                else
+                {
+                    if (_jumpAmountCur != jumpAmount)
+                    {
+                        robotAnimator.SetJump();
+                    }
+                    else
+                    {
+                        if (_moveSpeedCur == moveSpeedAfterLand)
+                        {
+                            robotAnimator.SetJumpLand();
+                        }
+                        else if (_moveSpeedCur == moveSpeedStunned)
+                        {
+                            robotAnimator.SetDamage();
+                        }
+                        else
+                        {
+                            robotAnimator.SetRun();
+                        }
+
+                        if (_isCollided)
+                        {
+                            robotAnimator.SetDeath();
+                        }
+                    }
+
+                    if (!_isCollided)
+                    {
+                        // Set Avatar rotation
+                        robotAnimator.transform.rotation = Quaternion.LookRotation(new Vector3(_movementLerp.x, 0f, _movementLerp.z).normalized);
+                    }
                 }
             }
         }
-    }
+    } 
     #endregion
 }
