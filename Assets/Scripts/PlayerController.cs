@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour
         if(triggerCollision.isTriggered
         && (!_isCrouching)) // || jumpAmount == _jumpAmountCur
         {
-            //Debug.Log("Collided into obstacle");
+            Debug.Log("Collided into obstacle");
             _isCollided = true;
 
             rb.linearVelocity = Vector3.zero;
@@ -384,6 +384,14 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(playerCamera.ApplyOffsetFXDamage2());
             Invoke(nameof(EndCollision), 1f);
         }
+    }
+    public void StopPlayer()
+    {
+        StartCoroutine(playerCamera.ApplyOffsetFXDamage2());
+
+        _isUsingRigidbody = true;
+        _isCollided = true;
+        rb.linearVelocity = Vector3.zero;
     }
     public void SetCollidedStatus(bool value)
     {

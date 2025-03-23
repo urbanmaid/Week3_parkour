@@ -32,13 +32,15 @@ public class GameManager : MonoBehaviour
 
     public void SetPlayerCollided()
     {
-        playerController.SetCollided();
+        //playerController.SetCollided();
+        playerController.StopPlayer();
     }
 
     public void ResetPlayerInRelatedPos(Vector3 resetPos)
     {
         playerController.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         playerController.gameObject.transform.position = resetPos + resetRelativePos;
+        playerController.SetCollidedStatus(false);
     }
 
     public void ResetPlayerPosition()
