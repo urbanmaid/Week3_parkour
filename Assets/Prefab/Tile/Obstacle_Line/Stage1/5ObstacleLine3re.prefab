@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1885705854450594680}
   m_Layer: 0
-  m_Name: 5ObstacleLine3
+  m_Name: 5ObstacleLine3re
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 333246467750408737, guid: ac70a3e19eade654b834e1dfe2fbdf6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5000002
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 333246467750408737, guid: ac70a3e19eade654b834e1dfe2fbdf6b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -117,7 +117,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2242234942507733136, guid: 616ad3fbeb1f087408c8479d72d8637e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2242234942507733136, guid: 616ad3fbeb1f087408c8479d72d8637e, type: 3}
       propertyPath: m_LocalPosition.y
