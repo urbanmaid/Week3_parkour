@@ -95,7 +95,7 @@ public class ChunkManager : MonoBehaviour
     {
         for (int i = activeChunks.Count - 1; i >= 0; i--)
         {
-            if (activeChunks[i].transform.position.z < player.position.z - chunkLength * 2)
+            if (activeChunks[i].transform.position.z < player.position.z - chunkLength * 3)
             {
                 GameObject chunkToRemove = activeChunks[i];
                 activeChunks.RemoveAt(i);

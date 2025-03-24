@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _movementLerp;
     [SerializeField] Vector2 _moveInput;
     private readonly float lerpDelay = 10f;
-    private readonly Vector3 collisionKnockbackPos = Vector3.back * 4f;
+    private readonly Vector3 collisionKnockbackPos = Vector3.back * 6f;
     public float fallOffset = 0f;
 
 
