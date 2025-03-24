@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int jumpAmount = 1;
     private int _jumpAmountCur;
     [SerializeField] float fallMultiplier = 1.125f;
-    private Vector3 _wallKickDirection = new(2.4f, 1.68f, 0f);
+    private Vector3 _wallKickDirection = new(1.2f, 1.8f, 0f); //2.4f, 1.68f
     private bool _isRiskyToLand = false;
     private bool _isUsingRigidbody;
     private InputActions _inputActions;
