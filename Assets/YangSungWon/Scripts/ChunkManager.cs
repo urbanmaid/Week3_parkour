@@ -49,7 +49,6 @@ public class ChunkManager : MonoBehaviour
 
         if (currentStage > 1 && chunksSpawnedInStage == spawnDistance / chunkLength)
         {
-            Debug.Log("왜 호출 안하자?");
             GameManager.instance.SetCurStage(currentStage);
         }
     }

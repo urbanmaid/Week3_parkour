@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
     {
         curStage = stage;
         gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(curStage);
-        playerController.fallOffset = gameObject.GetComponent<ChunkManager>().GetStageHeight();
+        playerController.fallOffset = chunkManager.GetComponent<ChunkManager>().GetStageHeight();
     }
 
 
