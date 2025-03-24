@@ -54,15 +54,15 @@ public class EnvironmentOffset : MonoBehaviour
 
     public void SetStageTheme(int stage)
     {
-        waveScript.waveSpeed = oceanWaveSpeed[stage];
-        waveScript.waveHeight = oceanWaveHeight[stage];
+        waveScript.waveSpeed = oceanWaveSpeed[stage - 1];
+        waveScript.waveHeight = oceanWaveHeight[stage - 1];
 
-        skyboxMaterial.SetColor("_Tint", skyboxTint[stage]);
-        skyboxMaterial.SetColor("_Ground", skyboxGround[stage]);
-        skyboxMaterial.SetFloat("_Exposure", skyboxExposure[stage]);
-
-        directionalLight.transform.eulerAngles = dLightRotation[stage];
-        directionalLight.color = dLightEmmision[stage];
+        skyboxMaterial.SetColor("_Tint", skyboxTint[stage - 1]);
+        skyboxMaterial.SetColor("_Ground", skyboxGround[stage - 1]);
+        skyboxMaterial.SetFloat("_Exposure", skyboxExposure[stage - 1]);
+            
+        directionalLight.transform.eulerAngles = dLightRotation[stage - 1];
+        directionalLight.color = dLightEmmision[stage - 1]; 
     }
 
 

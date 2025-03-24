@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 19598720}
   - component: {fileID: 19598719}
+  - component: {fileID: 19598721}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -152,9 +153,8 @@ MonoBehaviour:
   chunkManager: {fileID: 171992868}
   resetPos:
   - 5
-  - 20
-  - 35
-  environmentOffset: {fileID: 171992869}
+  - 12
+  - 24
 --- !u!4 &19598720
 Transform:
   m_ObjectHideFlags: 0
@@ -170,6 +170,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &19598721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19598718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ca46e71d91e9a44b5d62d6ba7fe8db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveScript: {fileID: 385396751}
+  skyboxMaterial: {fileID: 2100000, guid: 13fb108aa80203d40bfd35ad24924ef8, type: 2}
+  directionalLight: {fileID: 1934824136}
+  currStage: 1
 --- !u!1001 &145499834
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -178,6 +194,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: jumpPower
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: playerCamera
       value: 
@@ -189,6 +209,10 @@ PrefabInstance:
     - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: moveSpeedAfterLand
       value: 22.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343133711796288677, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
+      propertyPath: moveSpeedHorizonal
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3101142696423628960, guid: 76275d032ee562946bbdbb9c343ff2ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -252,7 +276,6 @@ GameObject:
   m_Component:
   - component: {fileID: 171992867}
   - component: {fileID: 171992868}
-  - component: {fileID: 171992869}
   m_Layer: 0
   m_Name: ChunkManager
   m_TagString: Untagged
@@ -316,29 +339,13 @@ MonoBehaviour:
   player: {fileID: 328536579}
   chunkLength: 50
   spawnDistance: 150
-  stage1ChunkCount: 3
-  stage2ChunkCount: 3
-  stage3ChunkCount: 3
+  stage1ChunkCount: 5
+  stage2ChunkCount: 5
+  stage3ChunkCount: 5
   stage1Height: 0
   stage2Height: 12
   stage3Height: 24
   currentStage: 1
---- !u!114 &171992869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 171992865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99ca46e71d91e9a44b5d62d6ba7fe8db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waveScript: {fileID: 385396751}
-  skyboxMaterial: {fileID: 2100000, guid: 13fb108aa80203d40bfd35ad24924ef8, type: 2}
-  directionalLight: {fileID: 1934824136}
-  currStage: 0
 --- !u!1 &251642462
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +695,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 8.8, z: -14.09}
+  FollowOffset: {x: 0, y: 6, z: -12}
 --- !u!114 &604909566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -799,8 +806,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604909562}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18681979, y: 0, z: 0, w: 0.9823942}
-  m_LocalPosition: {x: -3.2754538, y: 11.148289, z: -6.2694407}
+  m_LocalRotation: {x: 0.112793654, y: 0, z: 0, w: 0.9936184}
+  m_LocalPosition: {x: -3.2754538, y: 8.348289, z: -4.1794405}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -927,8 +934,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1276954874}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18681979, y: 0, z: 0, w: 0.9823942}
-  m_LocalPosition: {x: -3.2754538, y: 11.148289, z: -6.2694407}
+  m_LocalRotation: {x: 0.112793654, y: 0, z: 0, w: 0.9936184}
+  m_LocalPosition: {x: -3.2754538, y: 8.348289, z: -4.1794405}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

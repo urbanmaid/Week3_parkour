@@ -20,8 +20,8 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private int stage3ChunkCount = 15;
 
     [SerializeField] private float stage1Height = 0f;
-    [SerializeField] private float stage2Height = 10f;
-    [SerializeField] private float stage3Height = 20f;
+    [SerializeField] private float stage2Height = 12f;
+    [SerializeField] private float stage3Height = 24f;
 
     private List<GameObject> activeChunks = new List<GameObject>();
     private float lastChunkEndPosition = 0f;
@@ -49,6 +49,7 @@ public class ChunkManager : MonoBehaviour
 
         if (currentStage > 1 && chunksSpawnedInStage == spawnDistance / chunkLength)
         {
+            Debug.Log("왜 호출 안하자?");
             GameManager.instance.SetCurStage(currentStage);
         }
     }
@@ -113,14 +114,11 @@ public class ChunkManager : MonoBehaviour
         {
             case 2:
                 currentHeight = stage2Height;
-                gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(1);
                 break;
             case 3:
                 currentHeight = stage3Height;
-                gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(2);
                 break;
             case 4:
-                gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(0);
                 FinishGame();
                 return;
         }

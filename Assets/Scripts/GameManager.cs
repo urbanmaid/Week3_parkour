@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private int curStage = 1;
 
-    public EnvironmentOffset environmentOffset;
+    //public EnvironmentOffset environmentOffset;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
