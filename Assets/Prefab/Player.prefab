@@ -347,6 +347,7 @@ MonoBehaviour:
   robotAnimator: {fileID: 6835269177373522067}
   jumpFXParticle: {fileID: 2261642397160132249}
   moveSpeed: 24
+  moveSpeedHorizonal: 15
   moveSpeedMax: 28
   moveSpeedAfterLand: 24
   moveSpeedStunned: 4
@@ -355,8 +356,9 @@ MonoBehaviour:
   jumpPower: 160
   crouchPower: 1
   jumpAmount: 1
-  fallMultiplier: 1.275
+  fallMultiplier: 1
   _moveInput: {x: 0, y: 0}
+  fallOffset: 0
   playerCamera: {fileID: 0}
   playerFollower: {fileID: 0}
 --- !u!54 &4708319863459136210
