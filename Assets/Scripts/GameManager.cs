@@ -53,31 +53,38 @@ public class GameManager : MonoBehaviour
     {
         Vector3 curPos = playerController.gameObject.transform.position;
 
+        if (curPos.z < 0)
+        {
+            playerController.gameObject.transform.position = new Vector3(0f, 10f, 5f);
+            return;
+        }
+
         float curZ = curPos.z;
         int chunkIndex = Mathf.FloorToInt(curZ / 50);
         float chunkStartZ = chunkIndex * 50;
 
         Vector3 resetPos = new Vector3(0f, playerController.fallOffset + 10f, 0f);
 
-        float relativeZ = curZ - chunkStartZ;
+        //float relativeZ = curZ - chunkStartZ;
 
-        float targetZOffset = resetPos[0];
-        if (relativeZ > resetPos[1])
-        {
-            targetZOffset = resetPos[1];
-        }
-        else if (relativeZ > resetPos[2])
-        {
-            targetZOffset = resetPos[2];
-        }
-        else
-        {
-            targetZOffset = resetPos[0];
-        }
+        //float targetZOffset = resetPos[0];
+        //if (relativeZ > resetPos[1])
+        //{
+        //    targetZOffset = resetPos[1];
+        //}
+        //else if (relativeZ > resetPos[2])
+        //{
+        //    targetZOffset = resetPos[2];
+        //}
+        //else
+        //{
+        //    targetZOffset = resetPos[0];
+        //}
 
-        resetPos.z = chunkStartZ + targetZOffset;
+        //resetPos.z = chunkStartZ + targetZOffset;
+        resetPos.z = chunkStartZ + 5f;
 
-        playerController.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        //playerController.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         playerController.gameObject.transform.position = resetPos;
 
         Debug.Log("Player Position Reset");
