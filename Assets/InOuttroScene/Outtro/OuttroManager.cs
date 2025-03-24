@@ -17,8 +17,8 @@ public class OuttroManager : MonoBehaviour
         if (_instance == null)
             _instance = this;
 
-        robotAnimator = FindAnyObjectByType<RobotAnimator>();
         robot = FindAnyObjectByType<Robot>();
+        robotAnimator = robot.GetComponent<RobotAnimator>();
         ocean = FindAnyObjectByType<Ocean>();
         ocean2 = FindAnyObjectByType<Ocean2>();
         block = FindAnyObjectByType<Block>();
