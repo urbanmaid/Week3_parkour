@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public ChunkManager chunkManager;
 
     [SerializeField] private float[] resetPos = { 5f, 20f, 35f};
-    private Vector3 resetRelativePos = new(0, 1.5f, -6f);
+    private Vector3 resetRelativePos = new(0, 1.5f, -10f);
 
     private int curStage = 1;
 

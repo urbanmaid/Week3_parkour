@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _movementLerp;
     [SerializeField] Vector2 _moveInput;
     private readonly float lerpDelay = 10f;
-
+    private readonly Vector3 collisionKnockbackPos = Vector3.back * 4f;
     public float fallOffset = 0f;
 
 
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
     }
     void CheckFallenSpeed()
     {
-        if(rb.linearVelocity.y < -18f)
+        if(rb.linearVelocity.y < -25f)
         {
             _isRiskyToLand = true;
         }
@@ -380,13 +380,14 @@ public class PlayerController : MonoBehaviour
     public void SetCollided()
     {
         if(triggerCollision.isTriggered
-        && (!_isCrouching)) // || jumpAmount == _jumpAmountCur
+        && (!_isCrouching)
+        || (_isCrouching && rb.linearVelocity.magnitude < 0.08f)) // || jumpAmount == _jumpAmountCur
         {
             Debug.Log("Collided into obstacle");
             _isCollided = true;
 
             rb.linearVelocity = Vector3.zero;
-            transform.Translate(Vector3.back * 2.0f);
+            transform.Translate(collisionKnockbackPos);
 
             StartCoroutine(playerCamera.ApplyOffsetFXDamage2());
             Invoke(nameof(EndCollision), 1f);
@@ -409,6 +410,7 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log("Collided has ended");
         _isCollided = false;
+        _jumpAmountCur = jumpAmount;
     }
 
     internal void SetUsingRigidbody(bool value)
