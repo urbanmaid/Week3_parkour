@@ -46,6 +46,7 @@ public class Canvas : MonoBehaviour
 
         // 완전히 닫힌 상태 유지
         SetClosedState();
+        GameManager.instance.LoadNextScene();
     }
 
     // 열린 상태 유지 (투명)
@@ -71,6 +72,5 @@ public class Canvas : MonoBehaviour
     public void FadeOut()
     {
         StartCoroutine(CloseCurtain());
-        GameManager.instance.LoadNextScene();
     }
 }

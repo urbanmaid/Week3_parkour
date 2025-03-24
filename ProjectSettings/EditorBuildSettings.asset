@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/InOuttroScene/Intro/IntroScene.unity
     guid: fe175797c3f584a45be161199f046f67
   - enabled: 1
+    path: Assets/Scenes/PlayTestScenes.unity
+    guid: 2b1de2d86d65ba34fb0f455bd693e8e5
+  - enabled: 1
     path: Assets/Scenes/Yang.unity
     guid: 2ef67245affdfbf42a8a68a52df5ff65
   - enabled: 1

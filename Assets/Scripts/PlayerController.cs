@@ -386,7 +386,7 @@ public class PlayerController : MonoBehaviour
             _isCollided = true;
 
             rb.linearVelocity = Vector3.zero;
-            transform.Translate(Vector3.back * 1.6f);
+            transform.Translate(Vector3.back * 2.0f);
 
             StartCoroutine(playerCamera.ApplyOffsetFXDamage2());
             Invoke(nameof(EndCollision), 1f);

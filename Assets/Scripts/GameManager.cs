@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] PlayerController playerController;
-    [SerializeField] ChunkManager chunkManager;
+    [SerializeField] public ChunkManager chunkManager;
 
     [SerializeField] private float[] resetPos = { 5f, 20f, 35f};
     private Vector3 resetRelativePos = new(0, 1.5f, -6f);
@@ -95,6 +95,11 @@ public class GameManager : MonoBehaviour
         curStage = stage;
         gameObject.GetComponent<EnvironmentOffset>().SetStageTheme(curStage);
         playerController.fallOffset = chunkManager.GetComponent<ChunkManager>().GetStageHeight();
+    }
+
+    public int GetCurStage()
+    {
+        return curStage;
     }
 
 
